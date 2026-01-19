@@ -1,0 +1,30 @@
+{
+  "name": "@betterovh/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.tsx",
+      "default": "./src/*.tsx"
+    }
+  },
+  "scripts": {
+    "lint": "eslint",
+    "format": "prettier",
+    "check": "prettier --write . && eslint --fix"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.7.2"
+  }
+}

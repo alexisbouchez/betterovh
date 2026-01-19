@@ -1,0 +1,19 @@
+{
+  "name": "betterovh",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "build": "bun run --filter '*' build",
+    "lint": "bun run --filter '*' lint",
+    "format": "bun run --filter '*' format",
+    "check": "bun run --filter '*' check"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest-axe": "^3.5.9",
+    "jest-axe": "^10.0.0",
+    "msw": "^2.12.7"
+  }
+}
