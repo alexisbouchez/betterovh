@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { SidebarProvider } from '@/components/ui/sidebar'
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -17,6 +18,7 @@ const createTestQueryClient = () =>
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   route?: string
   queryClient?: QueryClient
+  withSidebar?: boolean
 }
 
 export function renderWithProviders(
@@ -24,12 +26,17 @@ export function renderWithProviders(
   {
     route = '/',
     queryClient = createTestQueryClient(),
+    withSidebar = false,
     ...renderOptions
   }: CustomRenderOptions = {}
 ) {
   function Wrapper({ children }: { children: React.ReactNode }) {
+    let content = children
+    if (withSidebar) {
+      content = <SidebarProvider>{content}</SidebarProvider>
+    }
     return (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{content}</QueryClientProvider>
     )
   }
 
