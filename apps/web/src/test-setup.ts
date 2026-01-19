@@ -18,9 +18,23 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
+// Mock localStorage
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
+}
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+})
+
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 afterEach(() => {
   cleanup()
   server.resetHandlers()
+  vi.clearAllMocks()
 })
 afterAll(() => server.close())
