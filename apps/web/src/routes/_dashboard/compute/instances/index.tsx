@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { InstancesTable } from '@/components/instances/instances-table'
 import { BulkActions } from '@/components/instances/bulk-actions'
@@ -19,6 +19,7 @@ export const Route = createFileRoute('/_dashboard/compute/instances/')({
 })
 
 function InstancesListPage() {
+  const navigate = useNavigate()
   const projectId = 'default' // TODO: Get from context/route
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
@@ -133,7 +134,9 @@ function InstancesListPage() {
             Manage your cloud instances
           </p>
         </div>
-        <Button>Create Instance</Button>
+        <Button asChild>
+          <Link to="/compute/instances/new">Create Instance</Link>
+        </Button>
       </div>
 
       {selectedIds.length > 0 && (
@@ -155,8 +158,7 @@ function InstancesListPage() {
         selectedIds={selectedIds}
         onSelectionChange={setSelectedIds}
         onRowClick={(instance) => {
-          // TODO: Navigate to instance detail
-          console.log('Navigate to instance:', instance.id)
+          navigate({ to: '/compute/instances/$instanceId', params: { instanceId: instance.id } })
         }}
       />
     </div>
