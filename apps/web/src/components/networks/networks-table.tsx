@@ -1,0 +1,116 @@
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import type { Network } from '@/lib/queries/networks'
+
+export interface NetworksTableProps {
+  networks: Network[]
+  isLoading?: boolean
+  error?: Error
+  onRowClick?: (network: Network) => void
+}
+
+const statusConfig: Record<Network['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+  ACTIVE: { label: 'Active', variant: 'default' },
+  BUILD: { label: 'Building', variant: 'outline' },
+  DOWN: { label: 'Down', variant: 'secondary' },
+  ERROR: { label: 'Error', variant: 'destructive' },
+}
+
+function TableSkeleton() {
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <TableRow key={i}>
+          <TableCell>
+            <Skeleton data-testid="table-skeleton" className="h-4 w-32" />
+          </TableCell>
+          <TableCell>
+            <Skeleton data-testid="table-skeleton" className="h-4 w-16" />
+          </TableCell>
+          <TableCell>
+            <Skeleton data-testid="table-skeleton" className="h-4 w-24" />
+          </TableCell>
+          <TableCell>
+            <Skeleton data-testid="table-skeleton" className="h-4 w-12" />
+          </TableCell>
+          <TableCell>
+            <Skeleton data-testid="table-skeleton" className="h-4 w-16" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  )
+}
+
+export function NetworksTable({ networks, isLoading, error, onRowClick }: NetworksTableProps) {
+  if (error) {
+    return (
+      <Alert variant="destructive" role="alert">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>Failed to load networks</AlertDescription>
+      </Alert>
+    )
+  }
+
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Regions</TableHead>
+          <TableHead>VLAN ID</TableHead>
+          <TableHead>Subnets</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {isLoading ? (
+          <TableSkeleton />
+        ) : networks.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+              No networks found
+            </TableCell>
+          </TableRow>
+        ) : (
+          networks.map((network) => {
+            const config = statusConfig[network.status]
+            const subnetCount = network.subnets.length
+            return (
+              <TableRow
+                key={network.id}
+                onClick={() => onRowClick?.(network)}
+                className={onRowClick ? 'cursor-pointer hover:bg-muted/50' : undefined}
+              >
+                <TableCell className="font-medium">{network.name}</TableCell>
+                <TableCell>
+                  <Badge variant={config.variant}>{config.label}</Badge>
+                </TableCell>
+                <TableCell>{network.regions.join(', ')}</TableCell>
+                <TableCell>
+                  {network.vlanId ? (
+                    <code className="text-xs">{network.vlanId}</code>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {subnetCount} {subnetCount === 1 ? 'subnet' : 'subnets'}
+                </TableCell>
+              </TableRow>
+            )
+          })
+        )}
+      </TableBody>
+    </Table>
+  )
+}
