@@ -17,6 +17,15 @@ export interface Instance {
   ipAddresses: InstanceIPAddress[]
 }
 
+export interface CreateInstanceParams {
+  projectId: string
+  name: string
+  region: string
+  flavorId: string
+  imageId: string
+  sshKeyId?: string
+}
+
 interface InstanceMutationParams {
   projectId: string
   instanceId: string
@@ -97,6 +106,22 @@ async function deleteInstance(projectId: string, instanceId: string): Promise<vo
   }
 }
 
+async function createInstance(params: CreateInstanceParams): Promise<Instance> {
+  const { projectId, ...body } = params
+  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/instance`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Failed to create instance')
+  }
+
+  return response.json()
+}
+
 // Queries
 
 export function useInstances(projectId: string) {
@@ -159,6 +184,17 @@ export function useDeleteInstance() {
   return useMutation({
     mutationFn: ({ projectId, instanceId }: InstanceMutationParams) =>
       deleteInstance(projectId, instanceId),
+    onSuccess: (_, { projectId }) => {
+      queryClient.invalidateQueries({ queryKey: ['instances', projectId] })
+    },
+  })
+}
+
+export function useCreateInstance() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (params: CreateInstanceParams) => createInstance(params),
     onSuccess: (_, { projectId }) => {
       queryClient.invalidateQueries({ queryKey: ['instances', projectId] })
     },
