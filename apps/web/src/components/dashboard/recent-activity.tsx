@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ComputerIcon, CreditCardIcon, HelpCircleIcon, FloppyDiskIcon, FileIcon } from '@hugeicons/core-free-icons'
 import type { IconDescriptor } from '@hugeicons/react'
@@ -53,12 +53,7 @@ function formatTimestamp(timestamp: string): string {
 
 export function RecentActivity({ isLoading, error, data }: RecentActivityProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load recent activity</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load recent activity" />
   }
 
   if (isLoading) {

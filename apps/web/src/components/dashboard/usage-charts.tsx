@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 
 export interface UsageDataPoint {
   date: string
@@ -66,12 +66,7 @@ function SimpleChart({ data, unit, color }: SimpleChartProps) {
 
 export function UsageCharts({ isLoading, error, data }: UsageChartsProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load usage charts</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load usage charts" />
   }
 
   if (isLoading) {

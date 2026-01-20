@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 import {
   Table,
   TableBody,
@@ -55,12 +55,7 @@ function TableSkeleton() {
 
 export function NetworksTable({ networks, isLoading, error, onRowClick }: NetworksTableProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load networks</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load networks" />
   }
 
   return (

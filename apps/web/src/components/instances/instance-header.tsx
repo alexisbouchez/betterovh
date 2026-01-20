@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 import { InstanceActions } from './instance-actions'
 import { formatDate } from '@/lib/utils'
 import type { Instance } from '@/lib/queries/instances'
@@ -61,12 +61,7 @@ export function InstanceHeader({
   onDelete,
 }: InstanceHeaderProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load instance details</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load instance details" />
   }
 
   if (isLoading) {

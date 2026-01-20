@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 import { DeleteConfirmDialog } from '@/components/confirm-dialog'
 import type { Volume } from '@/lib/queries/volumes'
 
@@ -50,12 +50,7 @@ export function VolumeHeader({
   onDelete,
 }: VolumeHeaderProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load volume details</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load volume details" />
   }
 
   if (isLoading) {

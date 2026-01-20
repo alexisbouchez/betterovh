@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ComputerIcon, FloppyDiskIcon, CreditCardIcon, HelpCircleIcon } from '@hugeicons/core-free-icons'
 
@@ -31,12 +31,7 @@ export interface StatsCardsProps {
 
 export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load stats data</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load stats data" />
   }
 
   if (isLoading) {

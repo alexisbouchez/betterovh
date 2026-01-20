@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ErrorState } from '@/components/error-state'
 import {
   Table,
   TableBody,
@@ -58,12 +58,7 @@ function TableSkeleton() {
 
 export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesTableProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load volumes</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load volumes" />
   }
 
   return (

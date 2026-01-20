@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
 import { EmptyState } from '@/components/empty-state'
+import { ErrorState } from '@/components/error-state'
 import { ComputerIcon } from '@hugeicons/core-free-icons'
 import type { Instance } from '@/lib/queries/instances'
 import { cn, formatDate } from '@/lib/utils'
@@ -79,12 +79,7 @@ export function InstancesTable({
   onRowClick,
 }: InstancesTableProps) {
   if (error) {
-    return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Failed to load instances</AlertDescription>
-      </Alert>
-    )
+    return <ErrorState message="Failed to load instances" />
   }
 
   const handleSelectAll = (checked: boolean) => {
