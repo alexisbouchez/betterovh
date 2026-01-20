@@ -23,6 +23,14 @@ async function handleOvhRequest(request: Request, path: string) {
   const method = request.method.toUpperCase()
   const url = new URL(request.url)
 
+  // Debug: Check environment variables
+  const hasAppKey = !!process.env.OVH_APP_KEY
+  const hasAppSecret = !!process.env.OVH_APP_SECRET
+  const hasConsumerKey = !!process.env.OVH_CONSUMER_KEY
+  const endpoint = process.env.OVH_ENDPOINT
+
+  console.log('OVH Config check:', { hasAppKey, hasAppSecret, hasConsumerKey, endpoint })
+
   let body: Record<string, unknown> | undefined
   if (['POST', 'PUT', 'PATCH'].includes(method)) {
     try {
@@ -81,29 +89,27 @@ async function handleOvhRequest(request: Request, path: string) {
   }
 }
 
+async function safeHandler(request: Request, params: { _splat?: string }) {
+  try {
+    const path = params._splat || ''
+    return await handleOvhRequest(request, path)
+  } catch (error) {
+    console.error('Handler error:', error)
+    return Response.json(
+      { error: 'Handler error', message: String(error) },
+      { status: 500 }
+    )
+  }
+}
+
 export const Route = createFileRoute('/api/ovh/$')({
   server: {
     handlers: {
-      GET: async ({ request, params }) => {
-        const path = params._splat || ''
-        return handleOvhRequest(request, path)
-      },
-      POST: async ({ request, params }) => {
-        const path = params._splat || ''
-        return handleOvhRequest(request, path)
-      },
-      PUT: async ({ request, params }) => {
-        const path = params._splat || ''
-        return handleOvhRequest(request, path)
-      },
-      PATCH: async ({ request, params }) => {
-        const path = params._splat || ''
-        return handleOvhRequest(request, path)
-      },
-      DELETE: async ({ request, params }) => {
-        const path = params._splat || ''
-        return handleOvhRequest(request, path)
-      },
+      GET: async ({ request, params }) => safeHandler(request, params),
+      POST: async ({ request, params }) => safeHandler(request, params),
+      PUT: async ({ request, params }) => safeHandler(request, params),
+      PATCH: async ({ request, params }) => safeHandler(request, params),
+      DELETE: async ({ request, params }) => safeHandler(request, params),
     },
   },
 })
