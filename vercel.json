@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "bun run --filter '@betterovh/web' build",
-  "outputDirectory": ".vercel/output"
+  "buildCommand": "cd apps/web && bun run build",
+  "outputDirectory": "apps/web/.vercel/output"
 }
