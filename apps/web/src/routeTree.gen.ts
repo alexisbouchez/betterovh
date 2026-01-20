@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiOvhSplatRouteImport } from './routes/api/ovh/$'
 import { Route as DashboardStorageVolumesIndexRouteImport } from './routes/_dashboard/storage/volumes/index'
 import { Route as DashboardProjectSshKeysIndexRouteImport } from './routes/_dashboard/project/ssh-keys/index'
 import { Route as DashboardNetworkPrivateIndexRouteImport } from './routes/_dashboard/network/private/index'
@@ -28,6 +29,11 @@ const LoginRoute = LoginRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOvhSplatRoute = ApiOvhSplatRouteImport.update({
+  id: '/api/ovh/$',
+  path: '/api/ovh/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardStorageVolumesIndexRoute =
@@ -82,6 +88,7 @@ const DashboardComputeInstancesInstanceIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/api/ovh/$': typeof ApiOvhSplatRoute
   '/compute/instances/$instanceId': typeof DashboardComputeInstancesInstanceIdRoute
   '/compute/instances/new': typeof DashboardComputeInstancesNewRoute
   '/storage/volumes/$volumeId': typeof DashboardStorageVolumesVolumeIdRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/api/ovh/$': typeof ApiOvhSplatRoute
   '/compute/instances/$instanceId': typeof DashboardComputeInstancesInstanceIdRoute
   '/compute/instances/new': typeof DashboardComputeInstancesNewRoute
   '/storage/volumes/$volumeId': typeof DashboardStorageVolumesVolumeIdRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/api/ovh/$': typeof ApiOvhSplatRoute
   '/_dashboard/compute/instances/$instanceId': typeof DashboardComputeInstancesInstanceIdRoute
   '/_dashboard/compute/instances/new': typeof DashboardComputeInstancesNewRoute
   '/_dashboard/storage/volumes/$volumeId': typeof DashboardStorageVolumesVolumeIdRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/api/ovh/$'
     | '/compute/instances/$instanceId'
     | '/compute/instances/new'
     | '/storage/volumes/$volumeId'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/api/ovh/$'
     | '/compute/instances/$instanceId'
     | '/compute/instances/new'
     | '/storage/volumes/$volumeId'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/api/ovh/$'
     | '/_dashboard/compute/instances/$instanceId'
     | '/_dashboard/compute/instances/new'
     | '/_dashboard/storage/volumes/$volumeId'
@@ -158,6 +170,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  ApiOvhSplatRoute: typeof ApiOvhSplatRoute
   DashboardComputeInstancesInstanceIdRoute: typeof DashboardComputeInstancesInstanceIdRoute
   DashboardComputeInstancesNewRoute: typeof DashboardComputeInstancesNewRoute
   DashboardStorageVolumesVolumeIdRoute: typeof DashboardStorageVolumesVolumeIdRoute
@@ -182,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ovh/$': {
+      id: '/api/ovh/$'
+      path: '/api/ovh/$'
+      fullPath: '/api/ovh/$'
+      preLoaderRoute: typeof ApiOvhSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_dashboard/storage/volumes/': {
@@ -246,6 +266,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  ApiOvhSplatRoute: ApiOvhSplatRoute,
   DashboardComputeInstancesInstanceIdRoute:
     DashboardComputeInstancesInstanceIdRoute,
   DashboardComputeInstancesNewRoute: DashboardComputeInstancesNewRoute,
