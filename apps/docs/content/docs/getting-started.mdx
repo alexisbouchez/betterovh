@@ -1,0 +1,87 @@
+---
+title: Getting Started
+description: Learn how to set up and run BetterOVH locally
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- [Bun](https://bun.sh/) (latest version)
+- OVH Cloud account with API credentials
+
+## Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/alexisbouchez/betterovh.git
+cd betterovh
+```
+
+### 2. Install Dependencies
+
+```bash
+bun install
+```
+
+### 3. Configure Environment Variables
+
+Copy the example environment file and fill in your OVH API credentials:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your credentials:
+
+```env
+# OVH API Credentials
+OVH_APP_KEY=your_app_key
+OVH_APP_SECRET=your_app_secret
+OVH_CONSUMER_KEY=your_consumer_key
+OVH_ENDPOINT=ovh-eu
+
+# Application
+VITE_API_URL=http://localhost:3000/api
+```
+
+### 4. Get OVH API Credentials
+
+1. Go to [OVH API Console](https://api.ovh.com/createToken/)
+2. Log in with your OVH account
+3. Generate API credentials with the following rights:
+   - `GET /cloud/project/*`
+   - `POST /cloud/project/*`
+   - `PUT /cloud/project/*`
+   - `DELETE /cloud/project/*`
+
+### 5. Start Development Server
+
+```bash
+bun run dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Development Commands
+
+```bash
+# Start development server
+bun run dev
+
+# Run tests
+bun --filter '@betterovh/web' test
+
+# Run tests in watch mode
+bun --filter '@betterovh/web' test:watch
+
+# Build for production
+bun run build
+
+# Type check
+cd apps/web && bunx tsc --noEmit
+
+# Lint
+bun run lint
+```
