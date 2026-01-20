@@ -4,6 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
 import { DeleteConfirmDialog } from '@/components/confirm-dialog'
 import type { Volume } from '@/lib/queries/volumes'
+import { volumeStatusConfig } from '@/lib/status-config'
 
 export interface VolumeHeaderProps {
   volume?: Volume
@@ -15,15 +16,6 @@ export interface VolumeHeaderProps {
   onDelete?: (volumeId: string) => Promise<void> | void
 }
 
-const statusConfig: Record<Volume['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  available: { label: 'Available', variant: 'default' },
-  'in-use': { label: 'In Use', variant: 'secondary' },
-  creating: { label: 'Creating', variant: 'outline' },
-  deleting: { label: 'Deleting', variant: 'outline' },
-  error: { label: 'Error', variant: 'destructive' },
-  attaching: { label: 'Attaching', variant: 'outline' },
-  detaching: { label: 'Detaching', variant: 'outline' },
-}
 
 function HeaderSkeleton() {
   return (
@@ -70,7 +62,7 @@ export function VolumeHeader({
     return null
   }
 
-  const config = statusConfig[volume.status]
+  const config = volumeStatusConfig[volume.status]
   const isAttached = volume.status === 'in-use'
   const canDelete = !isAttached
 

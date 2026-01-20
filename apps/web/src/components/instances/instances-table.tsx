@@ -14,6 +14,7 @@ import { ErrorState } from '@/components/error-state'
 import { ComputerIcon } from '@hugeicons/core-free-icons'
 import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
 import type { Instance } from '@/lib/queries/instances'
+import { instanceStatusConfig } from '@/lib/status-config'
 import { cn, formatDate } from '@/lib/utils'
 
 export interface InstancesTableProps {
@@ -26,18 +27,6 @@ export interface InstancesTableProps {
   onRowClick?: (instance: Instance) => void
 }
 
-const statusConfig: Record<Instance['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  ACTIVE: { label: 'Active', variant: 'default' },
-  STOPPED: { label: 'Stopped', variant: 'secondary' },
-  BUILD: { label: 'Building', variant: 'outline' },
-  ERROR: { label: 'Error', variant: 'destructive' },
-  REBOOT: { label: 'Rebooting', variant: 'outline' },
-  HARD_REBOOT: { label: 'Rebooting', variant: 'outline' },
-  SHUTOFF: { label: 'Shut off', variant: 'secondary' },
-  DELETED: { label: 'Deleted', variant: 'secondary' },
-  SHELVED: { label: 'Shelved', variant: 'secondary' },
-  SHELVED_OFFLOADED: { label: 'Shelved', variant: 'secondary' },
-}
 
 function getPublicIP(instance: Instance): string | null {
   const publicIP = instance.ipAddresses.find((ip) => ip.type === 'public' && ip.version === 4)
@@ -147,7 +136,7 @@ export function InstancesTable({
             </TableRow>
           ) : (
             instances.map((instance, index) => {
-              const config = statusConfig[instance.status]
+              const config = instanceStatusConfig[instance.status]
               const publicIP = getPublicIP(instance)
               const isSelected = selectedIds.includes(instance.id)
               const rowProps = onRowClick ? getRowProps(instance, index) : {}

@@ -13,6 +13,7 @@ import { EmptyState } from '@/components/empty-state'
 import { FloppyDiskIcon } from '@hugeicons/core-free-icons'
 import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
 import type { Volume } from '@/lib/queries/volumes'
+import { volumeStatusConfig } from '@/lib/status-config'
 
 export interface VolumesTableProps {
   volumes: Volume[]
@@ -21,15 +22,6 @@ export interface VolumesTableProps {
   onRowClick?: (volume: Volume) => void
 }
 
-const statusConfig: Record<Volume['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  available: { label: 'Available', variant: 'default' },
-  'in-use': { label: 'In Use', variant: 'secondary' },
-  creating: { label: 'Creating', variant: 'outline' },
-  deleting: { label: 'Deleting', variant: 'outline' },
-  error: { label: 'Error', variant: 'destructive' },
-  attaching: { label: 'Attaching', variant: 'outline' },
-  detaching: { label: 'Detaching', variant: 'outline' },
-}
 
 function TableSkeleton() {
   return (
@@ -96,7 +88,7 @@ export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesT
           </TableRow>
         ) : (
           volumes.map((volume, index) => {
-            const config = statusConfig[volume.status]
+            const config = volumeStatusConfig[volume.status]
             const rowProps = onRowClick ? getRowProps(volume, index) : {}
             return (
               <TableRow

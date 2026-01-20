@@ -13,6 +13,7 @@ import { EmptyState } from '@/components/empty-state'
 import { ShieldIcon } from '@hugeicons/core-free-icons'
 import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
 import type { Network } from '@/lib/queries/networks'
+import { networkStatusConfig } from '@/lib/status-config'
 
 export interface NetworksTableProps {
   networks: Network[]
@@ -21,12 +22,6 @@ export interface NetworksTableProps {
   onRowClick?: (network: Network) => void
 }
 
-const statusConfig: Record<Network['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  ACTIVE: { label: 'Active', variant: 'default' },
-  BUILD: { label: 'Building', variant: 'outline' },
-  DOWN: { label: 'Down', variant: 'secondary' },
-  ERROR: { label: 'Error', variant: 'destructive' },
-}
 
 function TableSkeleton() {
   return (
@@ -93,7 +88,7 @@ export function NetworksTable({ networks, isLoading, error, onRowClick }: Networ
           </TableRow>
         ) : (
           networks.map((network, index) => {
-            const config = statusConfig[network.status]
+            const config = networkStatusConfig[network.status]
             const subnetCount = network.subnets.length
             const rowProps = onRowClick ? getRowProps(network, index) : {}
             return (

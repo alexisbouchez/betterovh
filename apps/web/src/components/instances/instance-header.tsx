@@ -5,6 +5,7 @@ import { ErrorState } from '@/components/error-state'
 import { InstanceActions } from './instance-actions'
 import { formatDate } from '@/lib/utils'
 import type { Instance } from '@/lib/queries/instances'
+import { instanceStatusConfig } from '@/lib/status-config'
 
 export interface InstanceHeaderProps {
   instance?: Instance
@@ -17,18 +18,6 @@ export interface InstanceHeaderProps {
   onDelete?: (instanceId: string) => void
 }
 
-const statusConfig: Record<Instance['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  ACTIVE: { label: 'Active', variant: 'default' },
-  STOPPED: { label: 'Stopped', variant: 'secondary' },
-  BUILD: { label: 'Building', variant: 'outline' },
-  ERROR: { label: 'Error', variant: 'destructive' },
-  REBOOT: { label: 'Rebooting', variant: 'outline' },
-  HARD_REBOOT: { label: 'Rebooting', variant: 'outline' },
-  SHUTOFF: { label: 'Shut off', variant: 'secondary' },
-  DELETED: { label: 'Deleted', variant: 'secondary' },
-  SHELVED: { label: 'Shelved', variant: 'secondary' },
-  SHELVED_OFFLOADED: { label: 'Shelved', variant: 'secondary' },
-}
 
 function getPublicIP(instance: Instance): string | null {
   const publicIP = instance.ipAddresses.find((ip) => ip.type === 'public' && ip.version === 4)
@@ -81,7 +70,7 @@ export function InstanceHeader({
     return null
   }
 
-  const config = statusConfig[instance.status]
+  const config = instanceStatusConfig[instance.status]
   const publicIP = getPublicIP(instance)
 
   return (
