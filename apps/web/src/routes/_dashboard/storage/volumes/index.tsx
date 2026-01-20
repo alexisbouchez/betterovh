@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
+import { useProjectId } from '@/lib/project-context'
 import { Button } from '@/components/ui/button'
 import { VolumesTable } from '@/components/storage/volumes-table'
 import { useVolumes, useDeleteVolume } from '@/lib/queries/volumes'
@@ -10,7 +11,7 @@ export const Route = createFileRoute('/_dashboard/storage/volumes/')({
 
 export function VolumesListPage() {
   const navigate = useNavigate()
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
 
   const { data: volumes, isLoading, error } = useVolumes(projectId)
   const deleteMutation = useDeleteVolume()

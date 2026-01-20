@@ -66,13 +66,11 @@ export function TopBar({ breadcrumbs = [], onSearchClick }: TopBarProps) {
         </Button>
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              data-testid="user-menu-trigger"
-            >
-              <span className="text-lg">👤</span>
-            </button>
+          <DropdownMenuTrigger
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            data-testid="user-menu-trigger"
+          >
+            <span className="text-lg">👤</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>

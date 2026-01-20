@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
 
 import { createQueryClient } from '../lib/query-client'
+import { ProjectProvider } from '../lib/project-context'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -43,7 +44,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <ProjectProvider>
+            {children}
+          </ProjectProvider>
           <ReactQueryDevtools buttonPosition="bottom-left" />
         </QueryClientProvider>
         <TanStackDevtools

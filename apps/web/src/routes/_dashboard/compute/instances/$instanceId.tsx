@@ -1,4 +1,5 @@
 import { createFileRoute, useParams, useNavigate } from '@tanstack/react-router'
+import { useProjectId } from '@/lib/project-context'
 import {
   useInstance,
   useStartInstance,
@@ -17,7 +18,7 @@ export const Route = createFileRoute('/_dashboard/compute/instances/$instanceId'
 export function InstanceDetailPage() {
   const { instanceId } = useParams({ from: '/_dashboard/compute/instances/$instanceId' })
   const navigate = useNavigate()
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
 
   const { data: instance, isLoading, error } = useInstance(projectId, instanceId)
   const startMutation = useStartInstance()

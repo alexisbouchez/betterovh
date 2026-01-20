@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
+import { useProjectId } from '@/lib/project-context'
 import { Button } from '@/components/ui/button'
 import { NetworksTable } from '@/components/networks/networks-table'
 import { useNetworks, useDeleteNetwork } from '@/lib/queries/networks'
@@ -10,7 +11,7 @@ export const Route = createFileRoute('/_dashboard/network/private/')({
 
 export function NetworksListPage() {
   const navigate = useNavigate()
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
 
   const { data: networks, isLoading, error } = useNetworks(projectId)
   const deleteMutation = useDeleteNetwork()

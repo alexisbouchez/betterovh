@@ -1,24 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '../../../../test-utils'
 
+// Mock function
+const mockUseVolumes = vi.fn(() => ({
+  data: [
+    {
+      id: 'vol-1',
+      name: 'data-volume',
+      size: 100,
+      status: 'available',
+      region: 'GRA11',
+      createdAt: '2024-01-01T00:00:00Z',
+      bootable: false,
+      volumeType: 'classic',
+    },
+  ],
+  isLoading: false,
+  error: null,
+}))
+
 // Mock the queries module
 vi.mock('@/lib/queries/volumes', () => ({
-  useVolumes: vi.fn(() => ({
-    data: [
-      {
-        id: 'vol-1',
-        name: 'data-volume',
-        size: 100,
-        status: 'available',
-        region: 'GRA11',
-        createdAt: '2024-01-01T00:00:00Z',
-        bootable: false,
-        volumeType: 'classic',
-      },
-    ],
-    isLoading: false,
-    error: null,
-  })),
+  useVolumes: () => mockUseVolumes(),
   useDeleteVolume: vi.fn(() => ({
     mutateAsync: vi.fn(),
     isPending: false,
@@ -33,17 +36,16 @@ vi.mock('@/lib/notification-store', () => ({
 }))
 
 // Mock TanStack Router
-vi.mock('@tanstack/react-router', async () => {
-  const actual = await vi.importActual('@tanstack/react-router')
-  return {
-    ...actual,
-    createFileRoute: () => () => ({ component: () => null }),
-    useNavigate: vi.fn(() => vi.fn()),
-    Link: ({ children, to }: any) => <a href={to}>{children}</a>,
-  }
-})
+vi.mock('@tanstack/react-router', () => ({
+  createFileRoute: () => () => ({ component: () => null }),
+  useNavigate: vi.fn(() => vi.fn()),
+  Link: ({ children, to }: any) => <a href={to}>{children}</a>,
+}))
 
-import { useVolumes } from '@/lib/queries/volumes'
+// Mock project context
+vi.mock('@/lib/project-context', () => ({
+  useProjectId: () => 'default',
+}))
 
 // Import after mocks
 import { VolumesListPage } from './index'
@@ -51,6 +53,23 @@ import { VolumesListPage } from './index'
 describe('VolumesListPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Reset to default
+    mockUseVolumes.mockReturnValue({
+      data: [
+        {
+          id: 'vol-1',
+          name: 'data-volume',
+          size: 100,
+          status: 'available',
+          region: 'GRA11',
+          createdAt: '2024-01-01T00:00:00Z',
+          bootable: false,
+          volumeType: 'classic',
+        },
+      ],
+      isLoading: false,
+      error: null,
+    })
   })
 
   it('renders page title', () => {
@@ -69,22 +88,22 @@ describe('VolumesListPage', () => {
   })
 
   it('shows loading state', () => {
-    vi.mocked(useVolumes).mockReturnValue({
+    mockUseVolumes.mockReturnValue({
       data: undefined,
       isLoading: true,
       error: null,
-    } as any)
+    })
 
     render(<VolumesListPage />)
     expect(screen.getAllByTestId('table-skeleton').length).toBeGreaterThan(0)
   })
 
   it('shows error state', () => {
-    vi.mocked(useVolumes).mockReturnValue({
+    mockUseVolumes.mockReturnValue({
       data: undefined,
       isLoading: false,
       error: new Error('Failed to load'),
-    } as any)
+    })
 
     render(<VolumesListPage />)
     expect(screen.getByRole('alert')).toBeInTheDocument()

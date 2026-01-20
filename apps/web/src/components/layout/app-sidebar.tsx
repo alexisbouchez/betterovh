@@ -46,11 +46,9 @@ function NavGroup({
               (item.href !== '/' && location.pathname.startsWith(item.href))
             return (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={isActive}>
-                  <Link to={item.href}>
-                    <span>{item.icon}</span>
-                    <span>{item.title}</span>
-                  </Link>
+                <SidebarMenuButton render={<Link to={item.href} />} isActive={isActive}>
+                  <span>{item.icon}</span>
+                  <span>{item.title}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )

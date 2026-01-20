@@ -1,6 +1,14 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { ThemeProvider, useTheme } from './theme-provider'
+
+// Mock localStorage
+const mockLocalStorage = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+}
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage })
 
 // Test component that uses the theme hook
 function TestComponent() {
@@ -16,9 +24,12 @@ function TestComponent() {
 }
 
 describe('ThemeProvider', () => {
-  it('defaults to system theme', () => {
-    vi.mocked(localStorage.getItem).mockReturnValue(null)
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockLocalStorage.getItem.mockReturnValue(null)
+  })
 
+  it('defaults to system theme', () => {
     render(
       <ThemeProvider>
         <TestComponent />
@@ -28,8 +39,6 @@ describe('ThemeProvider', () => {
   })
 
   it('persists theme to localStorage', async () => {
-    vi.mocked(localStorage.getItem).mockReturnValue(null)
-
     render(
       <ThemeProvider>
         <TestComponent />
@@ -40,11 +49,11 @@ describe('ThemeProvider', () => {
       screen.getByText('Set Dark').click()
     })
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'dark')
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith('theme', 'dark')
   })
 
   it('reads initial theme from localStorage', () => {
-    vi.mocked(localStorage.getItem).mockReturnValue('dark')
+    mockLocalStorage.getItem.mockReturnValue('dark')
 
     render(
       <ThemeProvider>
@@ -56,8 +65,6 @@ describe('ThemeProvider', () => {
   })
 
   it('allows changing theme', () => {
-    vi.mocked(localStorage.getItem).mockReturnValue(null)
-
     render(
       <ThemeProvider>
         <TestComponent />

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
+import { useProjectId } from '@/lib/project-context'
 import { InstancesTable } from '@/components/instances/instances-table'
 import { BulkActions } from '@/components/instances/bulk-actions'
 import { InstanceActions } from '@/components/instances/instance-actions'
@@ -20,7 +21,7 @@ export const Route = createFileRoute('/_dashboard/compute/instances/')({
 
 function InstancesListPage() {
   const navigate = useNavigate()
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
   const { data: instances, isLoading, error } = useInstances(projectId)

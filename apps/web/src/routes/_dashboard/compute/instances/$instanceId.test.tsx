@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest'
 import { render, screen, waitFor } from '../../../../test-utils'
 import userEvent from '@testing-library/user-event'
 
 // Mock the queries module
+const mockUseInstance = vi.fn()
 vi.mock('@/lib/queries/instances', () => ({
-  useInstance: vi.fn(),
+  useInstance: () => mockUseInstance(),
   useStartInstance: vi.fn(() => ({ mutateAsync: vi.fn(), isPending: false })),
   useStopInstance: vi.fn(() => ({ mutateAsync: vi.fn(), isPending: false })),
   useRebootInstance: vi.fn(() => ({ mutateAsync: vi.fn(), isPending: false })),
@@ -19,17 +20,18 @@ vi.mock('@/lib/notification-store', () => ({
 }))
 
 // Mock TanStack Router
-vi.mock('@tanstack/react-router', async () => {
-  const actual = await vi.importActual('@tanstack/react-router')
-  return {
-    ...actual,
-    createFileRoute: () => () => ({ component: () => null }),
-    useParams: vi.fn(() => ({ instanceId: 'i-1' })),
-    useNavigate: vi.fn(() => vi.fn()),
-  }
-})
+vi.mock('@tanstack/react-router', () => ({
+  createFileRoute: () => () => ({ component: () => null }),
+  useParams: vi.fn(() => ({ instanceId: 'i-1' })),
+  useNavigate: vi.fn(() => vi.fn()),
+  Link: ({ children, ...props }: any) => <a {...props}>{children}</a>,
+}))
 
-import { useInstance } from '@/lib/queries/instances'
+// Mock project context
+vi.mock('@/lib/project-context', () => ({
+  useProjectId: () => 'default',
+}))
+
 import type { Instance } from '@/lib/queries/instances'
 
 // Import after mocks
@@ -55,77 +57,77 @@ describe('InstanceDetailPage', () => {
   })
 
   it('displays instance name when loaded', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: mockInstance,
       isLoading: false,
       error: null,
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getByText('web-server')).toBeInTheDocument()
   })
 
   it('displays loading state', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: undefined,
       isLoading: true,
       error: null,
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getAllByTestId('header-skeleton').length).toBeGreaterThan(0)
   })
 
   it('displays error state', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: undefined,
       isLoading: false,
       error: new Error('Failed to load'),
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getByRole('alert')).toBeInTheDocument()
   })
 
   it('displays instance overview section', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: mockInstance,
       isLoading: false,
       error: null,
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getByText('Instance Details')).toBeInTheDocument()
   })
 
   it('displays network section', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: mockInstance,
       isLoading: false,
       error: null,
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getByText('Network')).toBeInTheDocument()
   })
 
   it('displays public IP address', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: mockInstance,
       isLoading: false,
       error: null,
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getAllByText('1.2.3.4').length).toBeGreaterThan(0)
   })
 
   it('displays instance status badge', () => {
-    vi.mocked(useInstance).mockReturnValue({
+    mockUseInstance.mockReturnValue({
       data: mockInstance,
       isLoading: false,
       error: null,
-    } as any)
+    })
 
     render(<InstanceDetailPage />)
     expect(screen.getByText('Active')).toBeInTheDocument()

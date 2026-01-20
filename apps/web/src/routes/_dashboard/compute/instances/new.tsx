@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -13,7 +14,7 @@ export const Route = createFileRoute('/_dashboard/compute/instances/new')({
 
 export function CreateInstancePage() {
   const navigate = useNavigate()
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
 
   const { data: regions, isLoading: isLoadingRegions } = useRegions(projectId)
   const { data: flavors, isLoading: isLoadingFlavors } = useFlavors(projectId)

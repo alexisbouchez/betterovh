@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,16 +11,17 @@ export function ThemeToggle() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Toggle theme">
-          {theme === 'dark' ? (
-            <span>🌙</span>
-          ) : theme === 'light' ? (
-            <span>☀️</span>
-          ) : (
-            <span>💻</span>
-          )}
-        </Button>
+      <DropdownMenuTrigger
+        className="size-7 inline-flex items-center justify-center rounded-md hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/30 focus-visible:ring-[2px] outline-none"
+        aria-label="Toggle theme"
+      >
+        {theme === 'dark' ? (
+          <span>🌙</span>
+        ) : theme === 'light' ? (
+          <span>☀️</span>
+        ) : (
+          <span>💻</span>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>

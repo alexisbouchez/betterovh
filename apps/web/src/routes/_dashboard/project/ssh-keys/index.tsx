@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useProjectId } from '@/lib/project-context'
 import { Button } from '@/components/ui/button'
 import { SSHKeysTable } from '@/components/ssh-keys/ssh-keys-table'
 import { useSSHKeys, useDeleteSSHKey } from '@/lib/queries/ssh-keys'
@@ -9,7 +10,7 @@ export const Route = createFileRoute('/_dashboard/project/ssh-keys/')({
 })
 
 export function SSHKeysListPage() {
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
 
   const { data: sshKeys, isLoading, error } = useSSHKeys(projectId)
   const deleteMutation = useDeleteSSHKey()

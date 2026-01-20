@@ -1,4 +1,5 @@
 import { createFileRoute, useParams, useNavigate } from '@tanstack/react-router'
+import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   useVolume,
@@ -27,7 +28,7 @@ function formatDate(dateString: string): string {
 export function VolumeDetailPage() {
   const { volumeId } = useParams({ from: '/_dashboard/storage/volumes/$volumeId' })
   const navigate = useNavigate()
-  const projectId = 'default' // TODO: Get from context/route
+  const projectId = useProjectId()
 
   const { data: volume, isLoading, error } = useVolume(projectId, volumeId)
   const attachMutation = useAttachVolume()
