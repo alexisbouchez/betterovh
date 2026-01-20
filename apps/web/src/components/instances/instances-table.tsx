@@ -109,7 +109,7 @@ export function InstancesTable({
   })
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>
