@@ -71,18 +71,15 @@ export function InstanceActions({
         <DropdownMenuContent align="end">
           {isStopped && (
             <DropdownMenuItem onClick={handleStart}>
-              <span className="mr-2">▶️</span>
               Start
             </DropdownMenuItem>
           )}
           {isRunning && (
             <>
               <DropdownMenuItem onClick={handleStop}>
-                <span className="mr-2">⏹️</span>
                 Stop
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleReboot}>
-                <span className="mr-2">🔄</span>
                 Reboot
               </DropdownMenuItem>
             </>
@@ -92,7 +89,6 @@ export function InstanceActions({
             onClick={handleDeleteClick}
             className="text-destructive focus:text-destructive"
           >
-            <span className="mr-2">🗑️</span>
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

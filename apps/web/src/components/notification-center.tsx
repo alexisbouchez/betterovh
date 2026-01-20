@@ -4,14 +4,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Tick02Icon, LogoutIcon, HelpCircleIcon, NotificationIcon } from '@hugeicons/core-free-icons'
 import { useNotificationStore, type Notification, type NotificationType } from '@/lib/notification-store'
 import { cn } from '@/lib/utils'
+import type { IconDescriptor } from '@hugeicons/react'
 
-const typeIcons: Record<NotificationType, string> = {
-  success: '✓',
-  error: '✕',
-  warning: '⚠',
-  info: 'ℹ',
+const typeIcons: Record<NotificationType, IconDescriptor> = {
+  success: Tick02Icon,
+  error: LogoutIcon,
+  warning: HelpCircleIcon,
+  info: HelpCircleIcon,
 }
 
 const typeColors: Record<NotificationType, string> = {
@@ -54,11 +57,11 @@ function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps)
     >
       <div
         className={cn(
-          'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold',
+          'flex h-6 w-6 shrink-0 items-center justify-center rounded-full',
           typeColors[notification.type]
         )}
       >
-        {typeIcons[notification.type]}
+        <HugeiconsIcon icon={typeIcons[notification.type]} size={14} />
       </div>
       <div className="flex-1 min-w-0">
         <p className={cn('text-sm', !notification.read && 'font-medium')}>
@@ -90,7 +93,7 @@ export function NotificationCenter() {
         className="relative inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         aria-label="Notifications"
       >
-        <span className="text-lg">🔔</span>
+        <HugeiconsIcon icon={NotificationIcon} size={20} />
         {unreadCount > 0 && (
           <span
             data-testid="unread-count"

@@ -17,6 +17,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { SearchIcon, UserIcon } from '@hugeicons/core-free-icons'
 
 interface TopBarProps {
   breadcrumbs?: Array<{ label: string; href?: string }>
@@ -28,27 +30,29 @@ export function TopBar({ breadcrumbs = [], onSearchClick }: TopBarProps) {
     <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mr-2 h-4" />
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          {breadcrumbs.map((crumb, index) => (
-            <span key={crumb.label} className="contents">
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                {crumb.href ? (
-                  <BreadcrumbLink href={crumb.href}>
-                    {crumb.label}
-                  </BreadcrumbLink>
-                ) : (
-                  <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                )}
-              </BreadcrumbItem>
-            </span>
-          ))}
-        </BreadcrumbList>
-      </Breadcrumb>
+      <nav aria-label="Breadcrumb">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+            {breadcrumbs.map((crumb) => (
+              <span key={crumb.label} className="contents">
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  {crumb.href ? (
+                    <BreadcrumbLink href={crumb.href}>
+                      {crumb.label}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                  )}
+                </BreadcrumbItem>
+              </span>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
+      </nav>
 
       <div className="ml-auto flex items-center gap-2">
         <Button
@@ -58,7 +62,7 @@ export function TopBar({ breadcrumbs = [], onSearchClick }: TopBarProps) {
           onClick={onSearchClick}
           aria-label="Search"
         >
-          <span className="mr-2">🔍</span>
+          <HugeiconsIcon icon={SearchIcon} size={14} className="mr-2" />
           <span className="text-muted-foreground">Search...</span>
           <kbd className="ml-4 pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             <span className="text-xs">⌘</span>K
@@ -69,8 +73,9 @@ export function TopBar({ breadcrumbs = [], onSearchClick }: TopBarProps) {
           <DropdownMenuTrigger
             className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             data-testid="user-menu-trigger"
+            aria-label="User menu"
           >
-            <span className="text-lg">👤</span>
+            <HugeiconsIcon icon={UserIcon} size={18} />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>

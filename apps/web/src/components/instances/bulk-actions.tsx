@@ -10,7 +10,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-
 export interface BulkActionsProps {
   selectedCount: number
   disabled?: boolean
@@ -57,7 +56,6 @@ export function BulkActions({
           disabled={disabled}
           aria-label="Start all"
         >
-          <span className="mr-1">▶️</span>
           Start All
         </Button>
         <Button
@@ -67,7 +65,6 @@ export function BulkActions({
           disabled={disabled}
           aria-label="Stop all"
         >
-          <span className="mr-1">⏹️</span>
           Stop All
         </Button>
         <Button
@@ -78,7 +75,6 @@ export function BulkActions({
           className="text-destructive hover:text-destructive"
           aria-label="Delete all"
         >
-          <span className="mr-1">🗑️</span>
           Delete All
         </Button>
         <div className="h-4 w-px bg-border" />

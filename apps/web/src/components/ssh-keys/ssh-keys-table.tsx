@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 import { DeleteConfirmDialog } from '@/components/confirm-dialog'
 import { EmptyState } from '@/components/empty-state'
+import { SettingsIcon } from '@hugeicons/core-free-icons'
 import { formatDate } from '@/lib/utils'
 import type { SSHKey } from '@/lib/queries/ssh-keys'
 
@@ -75,7 +76,7 @@ export function SSHKeysTable({ sshKeys, isLoading, error, onDelete }: SSHKeysTab
           <TableRow>
             <TableCell colSpan={5}>
               <EmptyState
-                icon="🔑"
+                icon={SettingsIcon}
                 title="No SSH keys found"
                 description="Add an SSH key to securely connect to your instances without passwords."
                 actionLabel="Add SSH Key"

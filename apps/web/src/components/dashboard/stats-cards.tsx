@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ComputerIcon, FloppyDiskIcon, CreditCardIcon, HelpCircleIcon } from '@hugeicons/core-free-icons'
 
 export interface StatsCardsProps {
   isLoading?: boolean
@@ -60,7 +62,7 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Instances</CardTitle>
-          <span className="text-lg">💻</span>
+          <HugeiconsIcon icon={ComputerIcon} size={20} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{data?.instances.total ?? '--'}</div>
@@ -75,7 +77,7 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Storage</CardTitle>
-          <span className="text-lg">💾</span>
+          <HugeiconsIcon icon={FloppyDiskIcon} size={20} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
@@ -92,7 +94,7 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Current Spend</CardTitle>
-          <span className="text-lg">💰</span>
+          <HugeiconsIcon icon={CreditCardIcon} size={20} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
@@ -111,7 +113,7 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Alerts</CardTitle>
-          <span className="text-lg">⚠️</span>
+          <HugeiconsIcon icon={HelpCircleIcon} size={20} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">

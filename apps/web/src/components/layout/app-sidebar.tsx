@@ -10,20 +10,23 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { LayoutIcon, ComputerIcon, FloppyDiskIcon, ShieldIcon, SettingsIcon } from '@hugeicons/core-free-icons'
+import type { IconDescriptor } from '@hugeicons/react'
 
 const navItems = {
-  main: [{ title: 'Dashboard', href: '/', icon: '🏠' }],
+  main: [{ title: 'Dashboard', href: '/', icon: LayoutIcon }],
   compute: [
-    { title: 'Instances', href: '/compute/instances', icon: '💻' },
+    { title: 'Instances', href: '/compute/instances', icon: ComputerIcon },
   ],
   storage: [
-    { title: 'Volumes', href: '/storage/volumes', icon: '💾' },
+    { title: 'Volumes', href: '/storage/volumes', icon: FloppyDiskIcon },
   ],
   network: [
-    { title: 'Private Networks', href: '/network/private', icon: '🔒' },
+    { title: 'Private Networks', href: '/network/private', icon: ShieldIcon },
   ],
   project: [
-    { title: 'SSH Keys', href: '/project/ssh-keys', icon: '🔑' },
+    { title: 'SSH Keys', href: '/project/ssh-keys', icon: SettingsIcon },
   ],
 }
 
@@ -32,7 +35,7 @@ function NavGroup({
   items,
 }: {
   label?: string
-  items: Array<{ title: string; href: string; icon: string }>
+  items: Array<{ title: string; href: string; icon: IconDescriptor }>
 }) {
   const location = useLocation()
 
@@ -47,7 +50,7 @@ function NavGroup({
             return (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton render={<Link to={item.href} />} isActive={isActive}>
-                  <span>{item.icon}</span>
+                  <HugeiconsIcon icon={item.icon} size={18} />
                   <span>{item.title}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -64,7 +67,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="border-b px-4 py-3">
         <Link to="/" className="flex items-center gap-2 font-semibold">
-          <span className="text-lg">☁️</span>
+          <HugeiconsIcon icon={LayoutIcon} size={22} />
           <span>BetterOVH</span>
         </Link>
       </SidebarHeader>

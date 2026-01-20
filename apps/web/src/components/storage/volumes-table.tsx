@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { EmptyState } from '@/components/empty-state'
+import { FloppyDiskIcon } from '@hugeicons/core-free-icons'
 import type { Volume } from '@/lib/queries/volumes'
 
 export interface VolumesTableProps {
@@ -83,7 +84,7 @@ export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesT
           <TableRow>
             <TableCell colSpan={5}>
               <EmptyState
-                icon="💾"
+                icon={FloppyDiskIcon}
                 title="No volumes found"
                 description="Create a block storage volume to persist your data independently from instances."
                 actionLabel="Create Volume"

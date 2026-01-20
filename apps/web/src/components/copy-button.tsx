@@ -5,6 +5,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { FileIcon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@/lib/utils'
 
 interface CopyButtonProps {
@@ -50,9 +52,9 @@ export function CopyButton({ value, className, label = 'Copy' }: CopyButtonProps
             aria-label={copied ? 'Copied!' : label}
           >
             {copied ? (
-              <span className="text-xs">✓</span>
+              <HugeiconsIcon icon={Tick02Icon} size={12} />
             ) : (
-              <span className="text-xs">📋</span>
+              <HugeiconsIcon icon={FileIcon} size={12} />
             )}
           </button>
         )}

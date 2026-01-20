@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { EmptyState } from '@/components/empty-state'
+import { ShieldIcon } from '@hugeicons/core-free-icons'
 import type { Network } from '@/lib/queries/networks'
 
 export interface NetworksTableProps {
@@ -80,7 +81,7 @@ export function NetworksTable({ networks, isLoading, error, onRowClick }: Networ
           <TableRow>
             <TableCell colSpan={5}>
               <EmptyState
-                icon="🔒"
+                icon={ShieldIcon}
                 title="No private networks found"
                 description="Create a private network to securely connect your instances together."
                 actionLabel="Create Network"

@@ -4,6 +4,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { SunIcon, MoonIcon, ComputerIcon } from '@hugeicons/core-free-icons'
 import { useTheme } from './theme-provider'
 
 export function ThemeToggle() {
@@ -16,24 +18,24 @@ export function ThemeToggle() {
         aria-label="Toggle theme"
       >
         {theme === 'dark' ? (
-          <span>🌙</span>
+          <HugeiconsIcon icon={MoonIcon} size={16} />
         ) : theme === 'light' ? (
-          <span>☀️</span>
+          <HugeiconsIcon icon={SunIcon} size={16} />
         ) : (
-          <span>💻</span>
+          <HugeiconsIcon icon={ComputerIcon} size={16} />
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          <span className="mr-2">☀️</span>
+          <HugeiconsIcon icon={SunIcon} size={16} className="mr-2" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <span className="mr-2">🌙</span>
+          <HugeiconsIcon icon={MoonIcon} size={16} className="mr-2" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          <span className="mr-2">💻</span>
+          <HugeiconsIcon icon={ComputerIcon} size={16} className="mr-2" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

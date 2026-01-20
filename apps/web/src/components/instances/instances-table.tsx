@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
 import { EmptyState } from '@/components/empty-state'
+import { ComputerIcon } from '@hugeicons/core-free-icons'
 import type { Instance } from '@/lib/queries/instances'
 import { cn, formatDate } from '@/lib/utils'
 
@@ -134,7 +135,7 @@ export function InstancesTable({
             <TableRow>
               <TableCell colSpan={selectable ? 6 : 5}>
                 <EmptyState
-                  icon="💻"
+                  icon={ComputerIcon}
                   title="No instances found"
                   description="Create your first instance to get started with cloud computing."
                   actionLabel="Create Instance"

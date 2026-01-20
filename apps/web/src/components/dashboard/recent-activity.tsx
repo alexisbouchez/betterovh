@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ComputerIcon, CreditCardIcon, HelpCircleIcon, FloppyDiskIcon, FileIcon } from '@hugeicons/core-free-icons'
+import type { IconDescriptor } from '@hugeicons/react'
 
 export interface ActivityItem {
   id: string
@@ -15,14 +18,16 @@ export interface RecentActivityProps {
   data?: ActivityItem[]
 }
 
-const typeIcons: Record<ActivityItem['type'], string> = {
-  instance_created: '🚀',
-  instance_stopped: '⏹️',
-  instance_started: '▶️',
-  billing: '💳',
-  alert: '⚠️',
-  storage: '💾',
+const typeIcons: Record<ActivityItem['type'], IconDescriptor> = {
+  instance_created: ComputerIcon,
+  instance_stopped: ComputerIcon,
+  instance_started: ComputerIcon,
+  billing: CreditCardIcon,
+  alert: HelpCircleIcon,
+  storage: FloppyDiskIcon,
 }
+
+const defaultIcon = FileIcon
 
 function ActivitySkeleton() {
   return (
@@ -99,8 +104,8 @@ export function RecentActivity({ isLoading, error, data }: RecentActivityProps) 
               data-testid="activity-item"
               className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-lg">
-                {typeIcons[item.type] ?? '📝'}
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+                <HugeiconsIcon icon={typeIcons[item.type] ?? defaultIcon} size={16} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{item.message}</p>
