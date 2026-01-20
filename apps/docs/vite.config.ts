@@ -20,7 +20,9 @@ export default defineConfig({
   },
   plugins: [
     mdx(mdxConfig),
-    nitro(),
+    nitro({
+      preset: 'node-server',
+    }),
     tailwindcss(),
     tsconfigPaths(),
     tanstackStart({
