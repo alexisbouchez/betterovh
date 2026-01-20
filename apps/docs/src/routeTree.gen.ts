@@ -10,23 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LlmsTxtRouteImport } from './routes/llms.txt'
-import { Route as LlmsFullTxtRouteImport } from './routes/llms-full.txt'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LlmsTxtRoute = LlmsTxtRouteImport.update({
-  id: '/llms/txt',
-  path: '/llms/txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LlmsFullTxtRoute = LlmsFullTxtRouteImport.update({
-  id: '/llms-full/txt',
-  path: '/llms-full/txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsSplatRoute = DocsSplatRouteImport.update({
@@ -38,35 +26,27 @@ const DocsSplatRoute = DocsSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs/$': typeof DocsSplatRoute
-  '/llms-full/txt': typeof LlmsFullTxtRoute
-  '/llms/txt': typeof LlmsTxtRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs/$': typeof DocsSplatRoute
-  '/llms-full/txt': typeof LlmsFullTxtRoute
-  '/llms/txt': typeof LlmsTxtRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/docs/$': typeof DocsSplatRoute
-  '/llms-full/txt': typeof LlmsFullTxtRoute
-  '/llms/txt': typeof LlmsTxtRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/docs/$' | '/llms-full/txt' | '/llms/txt'
+  fullPaths: '/' | '/docs/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs/$' | '/llms-full/txt' | '/llms/txt'
-  id: '__root__' | '/' | '/docs/$' | '/llms-full/txt' | '/llms/txt'
+  to: '/' | '/docs/$'
+  id: '__root__' | '/' | '/docs/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DocsSplatRoute: typeof DocsSplatRoute
-  LlmsFullTxtRoute: typeof LlmsFullTxtRoute
-  LlmsTxtRoute: typeof LlmsTxtRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,20 +56,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/llms/txt': {
-      id: '/llms/txt'
-      path: '/llms/txt'
-      fullPath: '/llms/txt'
-      preLoaderRoute: typeof LlmsTxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/llms-full/txt': {
-      id: '/llms-full/txt'
-      path: '/llms-full/txt'
-      fullPath: '/llms-full/txt'
-      preLoaderRoute: typeof LlmsFullTxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs/$': {
@@ -105,8 +71,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DocsSplatRoute: DocsSplatRoute,
-  LlmsFullTxtRoute: LlmsFullTxtRoute,
-  LlmsTxtRoute: LlmsTxtRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

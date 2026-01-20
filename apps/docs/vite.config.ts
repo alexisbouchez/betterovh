@@ -15,9 +15,8 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
     tanstackStart({
-      tsr: {
-        appDirectory: 'src',
-        routesDirectory: 'src/routes',
+      router: {
+        routeFileIgnorePattern: '.*\\.txt\\.ts',
       },
       prerender: {
         enabled: true,
