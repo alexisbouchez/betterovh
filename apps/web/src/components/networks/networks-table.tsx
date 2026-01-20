@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 import { EmptyState } from '@/components/empty-state'
 import { ShieldIcon } from '@hugeicons/core-free-icons'
+import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
 import type { Network } from '@/lib/queries/networks'
 
 export interface NetworksTableProps {
@@ -54,6 +55,12 @@ function TableSkeleton() {
 }
 
 export function NetworksTable({ networks, isLoading, error, onRowClick }: NetworksTableProps) {
+  const { getRowProps } = useTableKeyboardNav({
+    items: networks,
+    onSelect: onRowClick,
+    getItemId: (network) => network.id,
+  })
+
   if (error) {
     return <ErrorState message="Failed to load networks" />
   }
@@ -85,14 +92,16 @@ export function NetworksTable({ networks, isLoading, error, onRowClick }: Networ
             </TableCell>
           </TableRow>
         ) : (
-          networks.map((network) => {
+          networks.map((network, index) => {
             const config = statusConfig[network.status]
             const subnetCount = network.subnets.length
+            const rowProps = onRowClick ? getRowProps(network, index) : {}
             return (
               <TableRow
                 key={network.id}
+                {...rowProps}
                 onClick={() => onRowClick?.(network)}
-                className={onRowClick ? 'cursor-pointer hover:bg-muted/50' : undefined}
+                className={onRowClick ? 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset' : undefined}
               >
                 <TableCell className="font-medium">{network.name}</TableCell>
                 <TableCell>

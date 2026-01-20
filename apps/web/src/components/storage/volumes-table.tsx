@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 import { EmptyState } from '@/components/empty-state'
 import { FloppyDiskIcon } from '@hugeicons/core-free-icons'
+import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
 import type { Volume } from '@/lib/queries/volumes'
 
 export interface VolumesTableProps {
@@ -57,6 +58,12 @@ function TableSkeleton() {
 }
 
 export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesTableProps) {
+  const { getRowProps } = useTableKeyboardNav({
+    items: volumes,
+    onSelect: onRowClick,
+    getItemId: (volume) => volume.id,
+  })
+
   if (error) {
     return <ErrorState message="Failed to load volumes" />
   }
@@ -88,13 +95,15 @@ export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesT
             </TableCell>
           </TableRow>
         ) : (
-          volumes.map((volume) => {
+          volumes.map((volume, index) => {
             const config = statusConfig[volume.status]
+            const rowProps = onRowClick ? getRowProps(volume, index) : {}
             return (
               <TableRow
                 key={volume.id}
+                {...rowProps}
                 onClick={() => onRowClick?.(volume)}
-                className={onRowClick ? 'cursor-pointer hover:bg-muted/50' : undefined}
+                className={onRowClick ? 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset' : undefined}
               >
                 <TableCell>
                   <div className="flex items-center gap-2">

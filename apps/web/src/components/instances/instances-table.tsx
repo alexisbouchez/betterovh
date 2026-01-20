@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { EmptyState } from '@/components/empty-state'
 import { ErrorState } from '@/components/error-state'
 import { ComputerIcon } from '@hugeicons/core-free-icons'
+import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
 import type { Instance } from '@/lib/queries/instances'
 import { cn, formatDate } from '@/lib/utils'
 
@@ -101,6 +102,12 @@ export function InstancesTable({
   const allSelected = instances.length > 0 && selectedIds.length === instances.length
   const someSelected = selectedIds.length > 0 && selectedIds.length < instances.length
 
+  const { getRowProps } = useTableKeyboardNav({
+    items: instances,
+    onSelect: onRowClick,
+    getItemId: (instance) => instance.id,
+  })
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -139,16 +146,18 @@ export function InstancesTable({
               </TableCell>
             </TableRow>
           ) : (
-            instances.map((instance) => {
+            instances.map((instance, index) => {
               const config = statusConfig[instance.status]
               const publicIP = getPublicIP(instance)
               const isSelected = selectedIds.includes(instance.id)
+              const rowProps = onRowClick ? getRowProps(instance, index) : {}
 
               return (
                 <TableRow
                   key={instance.id}
+                  {...rowProps}
                   className={cn(
-                    onRowClick && 'cursor-pointer hover:bg-muted/50',
+                    onRowClick && 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset',
                     isSelected && 'bg-muted/30'
                   )}
                   onClick={() => onRowClick?.(instance)}
