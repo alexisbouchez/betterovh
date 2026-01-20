@@ -1,3 +1,4 @@
+import { Link, useLocation } from '@tanstack/react-router'
 import {
   Sidebar,
   SidebarContent,
@@ -14,100 +15,67 @@ const navItems = {
   main: [{ title: 'Dashboard', href: '/', icon: '🏠' }],
   compute: [
     { title: 'Instances', href: '/compute/instances', icon: '💻' },
-    { title: 'Volumes', href: '/compute/volumes', icon: '💾' },
-    { title: 'Snapshots', href: '/compute/snapshots', icon: '📸' },
   ],
   storage: [
-    { title: 'Object Storage', href: '/storage/objects', icon: '📦' },
-    { title: 'Block Storage', href: '/storage/blocks', icon: '🧱' },
+    { title: 'Volumes', href: '/storage/volumes', icon: '💾' },
   ],
   network: [
     { title: 'Private Networks', href: '/network/private', icon: '🔒' },
-    { title: 'Load Balancers', href: '/network/load-balancers', icon: '⚖️' },
-    { title: 'Floating IPs', href: '/network/floating-ips', icon: '🌐' },
   ],
+  project: [
+    { title: 'SSH Keys', href: '/project/ssh-keys', icon: '🔑' },
+  ],
+}
+
+function NavGroup({
+  label,
+  items,
+}: {
+  label?: string
+  items: Array<{ title: string; href: string; icon: string }>
+}) {
+  const location = useLocation()
+
+  return (
+    <SidebarGroup>
+      {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map((item) => {
+            const isActive = location.pathname === item.href ||
+              (item.href !== '/' && location.pathname.startsWith(item.href))
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton asChild isActive={isActive}>
+                  <Link to={item.href}>
+                    <span>{item.icon}</span>
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  )
 }
 
 export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="border-b px-4 py-3">
-        <a href="/" className="flex items-center gap-2 font-semibold">
+        <Link to="/" className="flex items-center gap-2 font-semibold">
           <span className="text-lg">☁️</span>
           <span>BetterOVH</span>
-        </a>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.main.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
-                      <span>{item.icon}</span>
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Compute</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.compute.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
-                      <span>{item.icon}</span>
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Storage</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.storage.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
-                      <span>{item.icon}</span>
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Network</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.network.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
-                      <span>{item.icon}</span>
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <NavGroup items={navItems.main} />
+        <NavGroup label="Compute" items={navItems.compute} />
+        <NavGroup label="Storage" items={navItems.storage} />
+        <NavGroup label="Network" items={navItems.network} />
+        <NavGroup label="Project" items={navItems.project} />
       </SidebarContent>
     </Sidebar>
   )

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { screen } from '@testing-library/react'
-import { render } from '@testing-library/react'
+import { screen, render, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { RouterProvider, createRouter, createRootRoute, createMemoryHistory } from '@tanstack/react-router'
 import { AppShell } from './app-shell'
 
 // Minimal render for AppShell since it has its own SidebarProvider
@@ -9,26 +9,42 @@ const renderAppShell = (children: React.ReactNode) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
+
+  const rootRoute = createRootRoute({
+    component: () => <AppShell>{children}</AppShell>,
+  })
+
+  const router = createRouter({
+    routeTree: rootRoute,
+    history: createMemoryHistory({ initialEntries: ['/'] }),
+  })
+
   return render(
     <QueryClientProvider client={queryClient}>
-      <AppShell>{children}</AppShell>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   )
 }
 
 describe('AppShell', () => {
-  it('renders children in main content area', () => {
+  it('renders children in main content area', async () => {
     renderAppShell(<div>Test Content</div>)
-    expect(screen.getByText('Test Content')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Test Content')).toBeInTheDocument()
+    })
   })
 
-  it('renders sidebar logo', () => {
+  it('renders sidebar logo', async () => {
     renderAppShell(<div>Content</div>)
-    expect(screen.getByText('BetterOVH')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('BetterOVH')).toBeInTheDocument()
+    })
   })
 
-  it('renders user menu', () => {
+  it('renders user menu', async () => {
     renderAppShell(<div>Content</div>)
-    expect(screen.getByTestId('user-menu-trigger')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByTestId('user-menu-trigger')).toBeInTheDocument()
+    })
   })
 })
