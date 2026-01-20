@@ -46,10 +46,37 @@ async function handleOvhRequest(request: Request, path: string) {
     const data = await ovh.requestPromised(method as 'GET' | 'POST' | 'PUT' | 'DELETE', apiPath, body)
     return Response.json(data)
   } catch (error: unknown) {
-    const err = error as { error?: number; message?: string }
+    console.error('OVH API Error:', JSON.stringify(error, Object.getOwnPropertyNames(error as object)))
+
+    // Handle different error formats from OVH SDK
+    if (error && typeof error === 'object') {
+      const e = error as Record<string, unknown>
+
+      // OVH SDK errors typically have error code and message
+      if ('error' in e) {
+        return Response.json(
+          { message: e.message || 'OVH API Error', ovhError: e.error },
+          { status: typeof e.error === 'number' ? e.error : 500 }
+        )
+      }
+
+      // Standard Error objects
+      if (e instanceof Error) {
+        return Response.json(
+          { message: e.message, name: e.name },
+          { status: 500 }
+        )
+      }
+
+      return Response.json(
+        { message: 'Unknown error', details: String(error) },
+        { status: 500 }
+      )
+    }
+
     return Response.json(
-      { message: err.message || 'OVH API Error' },
-      { status: err.error || 500 }
+      { message: 'Unknown error', details: String(error) },
+      { status: 500 }
     )
   }
 }
