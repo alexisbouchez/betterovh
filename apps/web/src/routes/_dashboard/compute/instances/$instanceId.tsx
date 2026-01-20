@@ -73,13 +73,13 @@ export function InstanceDetailPage() {
     }
   }
 
-  const handleReboot = async (id: string) => {
+  const handleReboot = async (id: string, type: 'soft' | 'hard') => {
     try {
-      await rebootMutation.mutateAsync({ projectId, instanceId: id })
+      await rebootMutation.mutateAsync({ projectId, instanceId: id, type })
       addNotification({
         type: 'success',
         title: 'Instance rebooting',
-        message: 'The instance is now rebooting',
+        message: `The instance is performing a ${type} reboot`,
       })
     } catch (err) {
       addNotification({

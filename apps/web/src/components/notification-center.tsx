@@ -5,18 +5,14 @@ import {
   NotificationIcon,
   Tick02Icon,
 } from '@hugeicons/core-free-icons'
-import type {Notification, NotificationType} from '@/lib/notification-store';
+import type { Notification, NotificationType } from '@/lib/notification-store'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-  
-  
-  useNotificationStore
-} from '@/lib/notification-store'
+import { useNotificationStore } from '@/lib/notification-store'
 import { cn } from '@/lib/utils'
 
 const typeIcons: Record<NotificationType, typeof Tick02Icon> = {

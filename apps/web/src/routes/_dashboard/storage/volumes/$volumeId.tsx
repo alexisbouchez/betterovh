@@ -1,13 +1,17 @@
 import { createFileRoute, useNavigate, useParams } from '@tanstack/react-router'
 import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import {
+  useAttachVolume,
   useDeleteVolume,
   useDetachVolume,
   useVolume,
 } from '@/lib/queries/volumes'
+import { useInstances } from '@/lib/queries/instances'
 import { useNotificationStore } from '@/lib/notification-store'
 import { VolumeHeader } from '@/components/storage/volume-header'
+import { AttachVolumeDialog } from '@/components/storage/attach-volume-dialog'
 import { CopyableText } from '@/components/copy-button'
 import { formatDate } from '@/lib/utils'
 
@@ -23,6 +27,9 @@ export function VolumeDetailPage() {
   const projectId = useProjectId()
 
   const { data: volume, isLoading, error } = useVolume(projectId, volumeId)
+  const { data: instances, isLoading: instancesLoading } =
+    useInstances(projectId)
+  const attachMutation = useAttachVolume()
   const detachMutation = useDetachVolume()
   const deleteMutation = useDeleteVolume()
   const { addNotification } = useNotificationStore()
@@ -31,13 +38,26 @@ export function VolumeDetailPage() {
     navigate({ to: '/storage/volumes' })
   }
 
-  const handleAttach = async (_id: string) => {
-    // TODO: Show modal to select instance
-    addNotification({
-      type: 'info',
-      title: 'Attach volume',
-      message: 'Instance selection modal coming soon',
-    })
+  const handleAttach = async (instanceId: string) => {
+    try {
+      await attachMutation.mutateAsync({
+        projectId,
+        volumeId,
+        instanceId,
+      })
+      addNotification({
+        type: 'success',
+        title: 'Volume attaching',
+        message: 'The volume is being attached to the instance',
+      })
+    } catch (err) {
+      addNotification({
+        type: 'error',
+        title: 'Failed to attach volume',
+        message: err instanceof Error ? err.message : 'Unknown error',
+      })
+      throw err
+    }
   }
 
   const handleDetach = async (id: string) => {
@@ -87,9 +107,25 @@ export function VolumeDetailPage() {
         isLoading={isLoading}
         error={error}
         onBack={handleBack}
-        onAttach={handleAttach}
         onDetach={handleDetach}
         onDelete={handleDelete}
+        attachDialog={
+          volume && (
+            <AttachVolumeDialog
+              volumeName={volume.name}
+              volumeRegion={volume.region}
+              instances={instances ?? []}
+              instancesLoading={instancesLoading}
+              onSubmit={handleAttach}
+              isLoading={attachMutation.isPending}
+              trigger={
+                <Button variant="outline" size="sm">
+                  Attach
+                </Button>
+              }
+            />
+          )
+        }
       />
 
       {volume && (

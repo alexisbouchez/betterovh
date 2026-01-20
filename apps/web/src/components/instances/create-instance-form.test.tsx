@@ -1,11 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '../../test-utils'
-import {
-  CreateInstanceForm
-  
-} from './create-instance-form'
-import type {CreateInstanceFormProps} from './create-instance-form';
+import { CreateInstanceForm } from './create-instance-form'
+import type { CreateInstanceFormProps } from './create-instance-form'
 
 const mockRegions = [
   { name: 'GRA11', datacenterLocation: 'Gravelines, France' },

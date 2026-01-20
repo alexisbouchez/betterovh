@@ -14,6 +14,7 @@ export interface VolumeHeaderProps {
   onAttach?: (volumeId: string) => void
   onDetach?: (volumeId: string) => void
   onDelete?: (volumeId: string) => Promise<void> | void
+  attachDialog?: React.ReactNode
 }
 
 function HeaderSkeleton() {
@@ -39,6 +40,7 @@ export function VolumeHeader({
   onAttach,
   onDetach,
   onDelete,
+  attachDialog,
 }: VolumeHeaderProps) {
   if (error) {
     return <ErrorState message="Failed to load volume details" />
@@ -91,7 +93,8 @@ export function VolumeHeader({
         </div>
 
         <div className="flex items-center gap-2">
-          {!isAttached && onAttach && (
+          {!isAttached && attachDialog}
+          {!isAttached && !attachDialog && onAttach && (
             <Button
               variant="outline"
               size="sm"

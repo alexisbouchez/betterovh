@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '../../test-utils'
-import { RecentActivity  } from './recent-activity'
-import type {RecentActivityProps} from './recent-activity';
+import { RecentActivity } from './recent-activity'
+import type { RecentActivityProps } from './recent-activity'
 
 const mockData: RecentActivityProps['data'] = [
   {

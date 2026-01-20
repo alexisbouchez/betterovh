@@ -1,11 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '../../test-utils'
-import {
-  CreateVolumeForm
-  
-} from './create-volume-form'
-import type {CreateVolumeFormProps} from './create-volume-form';
+import { CreateVolumeForm } from './create-volume-form'
+import type { CreateVolumeFormProps } from './create-volume-form'
 
 const mockRegions = [
   { name: 'GRA11', datacenterLocation: 'Gravelines, France' },

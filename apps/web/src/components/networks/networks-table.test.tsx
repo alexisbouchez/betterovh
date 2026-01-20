@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '../../test-utils'
-import { NetworksTable  } from './networks-table'
-import type {NetworksTableProps} from './networks-table';
+import { NetworksTable } from './networks-table'
+import type { NetworksTableProps } from './networks-table'
 import type { Network } from '@/lib/queries/networks'
 
 const mockNetworks: Array<Network> = [

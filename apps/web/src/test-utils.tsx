@@ -6,7 +6,7 @@ import {
   createRootRoute,
   createRouter,
 } from '@tanstack/react-router'
-import type { RenderOptions } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react'
 import type { ReactElement } from 'react'
 import { SidebarProvider } from '@/components/ui/sidebar'
 

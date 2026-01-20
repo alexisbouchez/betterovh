@@ -1,5 +1,5 @@
-import {  useCallback, useRef } from 'react'
-import type {KeyboardEvent} from 'react';
+import { useCallback, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 
 interface UseTableKeyboardNavOptions<T> {
   items: Array<T>

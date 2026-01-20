@@ -8,7 +8,7 @@ export interface Session {
   expiresAt: number
 }
 
-export async function getSession(): Promise<Session | null> {
+export function getSession(): Session | null {
   const cookieValue = getCookie(SESSION_COOKIE_NAME)
 
   if (!cookieValue) {
@@ -20,7 +20,7 @@ export async function getSession(): Promise<Session | null> {
 
     // Check if session is expired
     if (session.expiresAt < Date.now()) {
-      await destroySession()
+      destroySession()
       return null
     }
 
@@ -30,7 +30,7 @@ export async function getSession(): Promise<Session | null> {
   }
 }
 
-export async function createSession(consumerKey: string): Promise<void> {
+export function createSession(consumerKey: string): void {
   const session: Session = {
     consumerKey,
     expiresAt: Date.now() + SESSION_DURATION_MS,
@@ -41,7 +41,7 @@ export async function createSession(consumerKey: string): Promise<void> {
   })
 }
 
-export async function destroySession(): Promise<void> {
+export function destroySession(): void {
   deleteCookie(SESSION_COOKIE_NAME)
 }
 

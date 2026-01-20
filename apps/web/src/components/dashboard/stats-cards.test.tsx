@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '../../test-utils'
-import { StatsCards  } from './stats-cards'
-import type {StatsCardsProps} from './stats-cards';
+import { StatsCards } from './stats-cards'
+import type { StatsCardsProps } from './stats-cards'
 
 const mockData: StatsCardsProps['data'] = {
   instances: {

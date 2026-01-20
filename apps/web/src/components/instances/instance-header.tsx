@@ -14,7 +14,7 @@ export interface InstanceHeaderProps {
   onBack?: () => void
   onStart?: (instanceId: string) => void
   onStop?: (instanceId: string) => void
-  onReboot?: (instanceId: string) => void
+  onReboot?: (instanceId: string, type: 'soft' | 'hard') => void
   onDelete?: (instanceId: string) => void
 }
 

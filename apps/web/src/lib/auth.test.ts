@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import {  createSession, destroySession, getSession } from './auth'
-import type {Session} from './auth';
+import { createSession, destroySession, getSession } from './auth'
+import type { Session } from './auth'
 
 // Mock cookie storage
 const mockCookies = new Map<string, string>()
@@ -18,38 +18,38 @@ describe('auth', () => {
   })
 
   describe('getSession', () => {
-    it('returns null when no session exists', async () => {
-      const session = await getSession()
+    it('returns null when no session exists', () => {
+      const session = getSession()
       expect(session).toBeNull()
     })
 
-    it('returns session data when cookie is valid', async () => {
+    it('returns session data when cookie is valid', () => {
       const sessionData: Session = {
         consumerKey: 'test-consumer-key',
         expiresAt: Date.now() + 3600000, // 1 hour from now
       }
       mockCookies.set('betterovh_session', JSON.stringify(sessionData))
 
-      const session = await getSession()
+      const session = getSession()
       expect(session).not.toBeNull()
       expect(session?.consumerKey).toBe('test-consumer-key')
     })
 
-    it('returns null when cookie is expired', async () => {
+    it('returns null when cookie is expired', () => {
       const sessionData: Session = {
         consumerKey: 'test-consumer-key',
         expiresAt: Date.now() - 1000, // expired
       }
       mockCookies.set('betterovh_session', JSON.stringify(sessionData))
 
-      const session = await getSession()
+      const session = getSession()
       expect(session).toBeNull()
     })
   })
 
   describe('createSession', () => {
-    it('sets cookie with consumer key', async () => {
-      await createSession('new-consumer-key')
+    it('sets cookie with consumer key', () => {
+      createSession('new-consumer-key')
 
       const cookieValue = mockCookies.get('betterovh_session')
       expect(cookieValue).toBeDefined()
@@ -58,9 +58,9 @@ describe('auth', () => {
       expect(session.consumerKey).toBe('new-consumer-key')
     })
 
-    it('sets expiration time', async () => {
+    it('sets expiration time', () => {
       const before = Date.now()
-      await createSession('test-key')
+      createSession('test-key')
       const after = Date.now()
 
       const cookieValue = mockCookies.get('betterovh_session')
@@ -74,13 +74,13 @@ describe('auth', () => {
   })
 
   describe('destroySession', () => {
-    it('clears the session cookie', async () => {
+    it('clears the session cookie', () => {
       mockCookies.set(
         'betterovh_session',
         JSON.stringify({ consumerKey: 'test' }),
       )
 
-      await destroySession()
+      destroySession()
 
       expect(mockCookies.has('betterovh_session')).toBe(false)
     })

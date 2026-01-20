@@ -1,12 +1,9 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import type {CreateInstanceFormData} from '@/components/instances/create-instance-form';
+import type { CreateInstanceFormData } from '@/components/instances/create-instance-form'
 import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  CreateInstanceForm
-  
-} from '@/components/instances/create-instance-form'
+import { CreateInstanceForm } from '@/components/instances/create-instance-form'
 import { useCreateInstance } from '@/lib/queries/instances'
 import { useFlavors, useImages, useRegions } from '@/lib/queries/catalog'
 import { useNotificationStore } from '@/lib/notification-store'

@@ -13,7 +13,7 @@ export const Route = createFileRoute('/login')({
 })
 
 export default function LoginPage() {
-  const handleConnect = async () => {
+  const handleConnect = () => {
     // TODO: Implement OAuth flow with OVH
     window.location.href = '/api/auth/login'
   }

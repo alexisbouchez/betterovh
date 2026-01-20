@@ -35,11 +35,11 @@ function InstancesListPage() {
         title: 'Instance started',
         message: 'The instance is now starting',
       })
-    } catch (error) {
+    } catch (err) {
       addNotification({
         type: 'error',
         title: 'Failed to start instance',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: err instanceof Error ? err.message : 'Unknown error',
       })
     }
   }
@@ -52,11 +52,11 @@ function InstancesListPage() {
         title: 'Instance stopped',
         message: 'The instance is now stopping',
       })
-    } catch (error) {
+    } catch (err) {
       addNotification({
         type: 'error',
         title: 'Failed to stop instance',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: err instanceof Error ? err.message : 'Unknown error',
       })
     }
   }
@@ -70,11 +70,11 @@ function InstancesListPage() {
         title: 'Instance deleted',
         message: 'The instance has been deleted',
       })
-    } catch (error) {
+    } catch (err) {
       addNotification({
         type: 'error',
         title: 'Failed to delete instance',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: err instanceof Error ? err.message : 'Unknown error',
       })
     }
   }

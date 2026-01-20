@@ -25,7 +25,7 @@ describe('ProtectedRoute', () => {
   })
 
   it('renders children when authenticated', async () => {
-    mockGetSession.mockResolvedValue({
+    mockGetSession.mockReturnValue({
       consumerKey: 'test-key',
       expiresAt: Date.now() + 3600000,
     })
@@ -36,13 +36,11 @@ describe('ProtectedRoute', () => {
       </ProtectedRoute>,
     )
 
-    // Should show loading first, then content
     expect(await screen.findByText('Protected Content')).toBeInTheDocument()
   })
 
-  it('shows loading skeleton while checking auth', () => {
-    // Keep the promise pending
-    mockGetSession.mockReturnValue(new Promise(() => {}))
+  it('redirects to login when not authenticated', () => {
+    mockGetSession.mockReturnValue(null)
 
     render(
       <ProtectedRoute>
@@ -50,6 +48,6 @@ describe('ProtectedRoute', () => {
       </ProtectedRoute>,
     )
 
-    expect(screen.getByTestId('auth-loading')).toBeInTheDocument()
+    expect(mockNavigate).toHaveBeenCalledWith({ to: '/login' })
   })
 })

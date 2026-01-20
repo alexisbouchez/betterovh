@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '../../test-utils'
-import { UsageCharts  } from './usage-charts'
-import type {UsageChartsProps} from './usage-charts';
+import { UsageCharts } from './usage-charts'
+import type { UsageChartsProps } from './usage-charts'
 
 const mockData: UsageChartsProps['data'] = {
   cpu: [

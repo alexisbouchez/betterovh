@@ -120,7 +120,14 @@ describe('InstanceActions', () => {
     })
 
     await user.click(screen.getByText('Reboot'))
-    expect(onReboot).toHaveBeenCalledWith('i-1')
+
+    // Reboot dialog should open - select soft reboot
+    await waitFor(() => {
+      expect(screen.getByText('Soft Reboot')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByText('Soft Reboot'))
+    expect(onReboot).toHaveBeenCalledWith('i-1', 'soft')
   })
 
   it('shows delete option', async () => {

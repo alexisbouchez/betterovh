@@ -2,7 +2,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useProjectId } from '@/lib/project-context'
 import { Button } from '@/components/ui/button'
 import { SSHKeysTable } from '@/components/ssh-keys/ssh-keys-table'
-import { useDeleteSSHKey, useSSHKeys } from '@/lib/queries/ssh-keys'
+import { AddSSHKeyDialog } from '@/components/ssh-keys/add-ssh-key-dialog'
+import {
+  useCreateSSHKey,
+  useDeleteSSHKey,
+  useSSHKeys,
+} from '@/lib/queries/ssh-keys'
 import { useNotificationStore } from '@/lib/notification-store'
 
 export const Route = createFileRoute('/_dashboard/project/ssh-keys/')({
@@ -13,8 +18,31 @@ export function SSHKeysListPage() {
   const projectId = useProjectId()
 
   const { data: sshKeys, isLoading, error } = useSSHKeys(projectId)
+  const createMutation = useCreateSSHKey()
   const deleteMutation = useDeleteSSHKey()
   const { addNotification } = useNotificationStore()
+
+  const handleCreate = async (data: { name: string; publicKey: string }) => {
+    try {
+      await createMutation.mutateAsync({
+        projectId,
+        name: data.name,
+        publicKey: data.publicKey,
+      })
+      addNotification({
+        type: 'success',
+        title: 'SSH key added',
+        message: 'Your SSH key has been added successfully',
+      })
+    } catch (err) {
+      addNotification({
+        type: 'error',
+        title: 'Failed to add SSH key',
+        message: err instanceof Error ? err.message : 'Unknown error',
+      })
+      throw err
+    }
+  }
 
   const handleDelete = async (keyId: string) => {
     try {
@@ -42,7 +70,11 @@ export function SSHKeysListPage() {
             Manage your SSH keys for instance access
           </p>
         </div>
-        <Button disabled>Add SSH Key (Coming Soon)</Button>
+        <AddSSHKeyDialog
+          onSubmit={handleCreate}
+          isLoading={createMutation.isPending}
+          trigger={<Button>Add SSH Key</Button>}
+        />
       </div>
 
       <SSHKeysTable

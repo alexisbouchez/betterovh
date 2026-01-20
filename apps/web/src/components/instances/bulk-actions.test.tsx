@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '../../test-utils'
-import { BulkActions  } from './bulk-actions'
-import type {BulkActionsProps} from './bulk-actions';
+import { BulkActions } from './bulk-actions'
+import type { BulkActionsProps } from './bulk-actions'
 
 describe('BulkActions', () => {
   const defaultProps: BulkActionsProps = {

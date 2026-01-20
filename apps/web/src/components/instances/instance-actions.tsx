@@ -17,12 +17,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
 
 export interface InstanceActionsProps {
   instance: Instance
   onStart?: (instanceId: string) => void
   onStop?: (instanceId: string) => void
-  onReboot?: (instanceId: string) => void
+  onReboot?: (instanceId: string, type: 'soft' | 'hard') => void
   onDelete?: (instanceId: string) => void
 }
 
@@ -34,6 +44,7 @@ export function InstanceActions({
   onDelete,
 }: InstanceActionsProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [rebootDialogOpen, setRebootDialogOpen] = useState(false)
 
   const isRunning = instance.status === 'ACTIVE'
   const isStopped =
@@ -47,8 +58,13 @@ export function InstanceActions({
     onStop?.(instance.id)
   }
 
-  const handleReboot = () => {
-    onReboot?.(instance.id)
+  const handleRebootClick = () => {
+    setRebootDialogOpen(true)
+  }
+
+  const handleReboot = (type: 'soft' | 'hard') => {
+    onReboot?.(instance.id, type)
+    setRebootDialogOpen(false)
   }
 
   const handleDeleteClick = () => {
@@ -76,7 +92,9 @@ export function InstanceActions({
           {isRunning && (
             <>
               <DropdownMenuItem onClick={handleStop}>Stop</DropdownMenuItem>
-              <DropdownMenuItem onClick={handleReboot}>Reboot</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleRebootClick}>
+                Reboot
+              </DropdownMenuItem>
             </>
           )}
           <DropdownMenuSeparator />
@@ -88,6 +106,54 @@ export function InstanceActions({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <Dialog open={rebootDialogOpen} onOpenChange={setRebootDialogOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>Reboot Instance</DialogTitle>
+            <DialogDescription>
+              Choose how to reboot <strong>{instance.name}</strong>.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-3">
+              <Label className="text-base">Reboot Type</Label>
+              <div className="grid gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleReboot('soft')}
+                  className="flex flex-col items-start gap-1 rounded-lg border p-4 text-left hover:bg-accent transition-colors"
+                >
+                  <span className="font-medium">Soft Reboot</span>
+                  <span className="text-sm text-muted-foreground">
+                    Gracefully shuts down and restarts the instance. Recommended
+                    for most cases.
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleReboot('hard')}
+                  className="flex flex-col items-start gap-1 rounded-lg border p-4 text-left hover:bg-accent transition-colors"
+                >
+                  <span className="font-medium">Hard Reboot</span>
+                  <span className="text-sm text-muted-foreground">
+                    Forces an immediate restart. Use when soft reboot fails or
+                    the instance is unresponsive.
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setRebootDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>

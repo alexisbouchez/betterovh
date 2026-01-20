@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import {  getSession } from '../lib/auth'
+import { getSession } from '../lib/auth'
 import { Skeleton } from './ui/skeleton'
-import type {Session} from '../lib/auth';
+import type { Session } from '../lib/auth'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -13,12 +13,11 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const [session, setSession] = useState<Session | null | undefined>(undefined)
 
   useEffect(() => {
-    getSession().then((s) => {
-      setSession(s)
-      if (!s) {
-        navigate({ to: '/login' })
-      }
-    })
+    const s = getSession()
+    setSession(s)
+    if (!s) {
+      navigate({ to: '/login' })
+    }
   }, [navigate])
 
   // Loading state

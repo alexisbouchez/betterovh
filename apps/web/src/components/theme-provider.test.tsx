@@ -38,7 +38,7 @@ describe('ThemeProvider', () => {
     expect(screen.getByTestId('theme-value').textContent).toBe('system')
   })
 
-  it('persists theme to localStorage', async () => {
+  it('persists theme to localStorage', () => {
     render(
       <ThemeProvider>
         <TestComponent />
