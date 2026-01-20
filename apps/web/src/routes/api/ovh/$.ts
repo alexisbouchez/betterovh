@@ -23,14 +23,6 @@ async function handleOvhRequest(request: Request, path: string) {
   const method = request.method.toUpperCase()
   const url = new URL(request.url)
 
-  // Debug: Check environment variables
-  const hasAppKey = !!process.env.OVH_APP_KEY
-  const hasAppSecret = !!process.env.OVH_APP_SECRET
-  const hasConsumerKey = !!process.env.OVH_CONSUMER_KEY
-  const endpoint = process.env.OVH_ENDPOINT
-
-  console.log('OVH Config check:', { hasAppKey, hasAppSecret, hasConsumerKey, endpoint })
-
   let body: Record<string, unknown> | undefined
   if (['POST', 'PUT', 'PATCH'].includes(method)) {
     try {
@@ -54,50 +46,10 @@ async function handleOvhRequest(request: Request, path: string) {
     const data = await ovh.requestPromised(method as 'GET' | 'POST' | 'PUT' | 'DELETE', apiPath, body)
     return Response.json(data)
   } catch (error: unknown) {
-    console.error('OVH API Error:', JSON.stringify(error, Object.getOwnPropertyNames(error as object)))
-
-    // Handle different error formats from OVH SDK
-    if (error && typeof error === 'object') {
-      const e = error as Record<string, unknown>
-
-      // OVH SDK errors typically have error code and message
-      if ('error' in e) {
-        return Response.json(
-          { message: e.message || 'OVH API Error', ovhError: e.error },
-          { status: typeof e.error === 'number' ? e.error : 500 }
-        )
-      }
-
-      // Standard Error objects
-      if (e instanceof Error) {
-        return Response.json(
-          { message: e.message, name: e.name },
-          { status: 500 }
-        )
-      }
-
-      return Response.json(
-        { message: 'Unknown error', details: String(error) },
-        { status: 500 }
-      )
-    }
-
+    const e = error as { error?: number; message?: string }
     return Response.json(
-      { message: 'Unknown error', details: String(error) },
-      { status: 500 }
-    )
-  }
-}
-
-async function safeHandler(request: Request, params: { _splat?: string }) {
-  try {
-    const path = params._splat || ''
-    return await handleOvhRequest(request, path)
-  } catch (error) {
-    console.error('Handler error:', error)
-    return Response.json(
-      { error: 'Handler error', message: String(error) },
-      { status: 500 }
+      { message: e.message || 'OVH API Error' },
+      { status: e.error || 500 }
     )
   }
 }
@@ -105,11 +57,11 @@ async function safeHandler(request: Request, params: { _splat?: string }) {
 export const Route = createFileRoute('/api/ovh/$')({
   server: {
     handlers: {
-      GET: async ({ request, params }) => safeHandler(request, params),
-      POST: async ({ request, params }) => safeHandler(request, params),
-      PUT: async ({ request, params }) => safeHandler(request, params),
-      PATCH: async ({ request, params }) => safeHandler(request, params),
-      DELETE: async ({ request, params }) => safeHandler(request, params),
+      GET: async ({ request, params }) => handleOvhRequest(request, params._splat || ''),
+      POST: async ({ request, params }) => handleOvhRequest(request, params._splat || ''),
+      PUT: async ({ request, params }) => handleOvhRequest(request, params._splat || ''),
+      PATCH: async ({ request, params }) => handleOvhRequest(request, params._splat || ''),
+      DELETE: async ({ request, params }) => handleOvhRequest(request, params._splat || ''),
     },
   },
 })
