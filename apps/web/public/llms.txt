@@ -1,0 +1,62 @@
+# BetterOVH
+
+> A modern frontend for OVH Cloud infrastructure management
+
+BetterOVH is a React 19 application built with TanStack Start that provides a better interface for managing OVH Cloud resources.
+
+## Tech Stack
+
+- Framework: TanStack Start with React 19
+- Routing: TanStack Router (file-based)
+- State: TanStack Query + Zustand
+- UI: Base UI + Tailwind CSS v4
+- Icons: Hugeicons
+- Testing: Vitest + Testing Library
+- Package Manager: Bun
+
+## Features
+
+- Instance Management (create, start, stop, reboot, delete)
+- Volume Storage (create, attach, detach, delete)
+- Private Networks configuration
+- SSH Keys management
+- Dashboard with stats and activity
+- Dark/Light mode
+- Notifications with auto-dismiss
+- Full keyboard navigation
+
+## Project Structure
+
+- `/apps/web/src/components/` - UI components
+- `/apps/web/src/routes/` - File-based routes
+- `/apps/web/src/lib/` - Utilities, queries, stores
+- `/apps/web/src/hooks/` - Custom React hooks
+- `/packages/ovh/` - OVH API client
+- `/packages/ui/` - Shared UI components
+
+## Key Components
+
+- `InstancesTable` - Display and manage cloud instances
+- `VolumesTable` - Display and manage storage volumes
+- `NetworksTable` - Display private networks
+- `SSHKeysTable` - Display and manage SSH keys
+- `StatsCards` - Dashboard statistics
+- `NotificationCenter` - Toast notifications
+- `ErrorState` - Reusable error display
+- `EmptyState` - Reusable empty state display
+
+## API Patterns
+
+All API queries use TanStack Query with:
+- Automatic caching and revalidation
+- Optimistic updates for mutations
+- Error handling with ErrorState component
+
+## Component Patterns
+
+Components follow consistent patterns:
+- TypeScript interfaces for props
+- Loading states with Skeleton components
+- Error states with ErrorState component
+- Empty states with EmptyState component
+- Keyboard navigation support
