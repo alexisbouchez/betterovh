@@ -1,7 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { CreateInstanceForm, type CreateInstanceFormProps } from './create-instance-form'
+import { render, screen, waitFor } from '../../test-utils'
+import {
+  CreateInstanceForm
+  
+} from './create-instance-form'
+import type {CreateInstanceFormProps} from './create-instance-form';
 
 const mockRegions = [
   { name: 'GRA11', datacenterLocation: 'Gravelines, France' },
@@ -56,12 +60,16 @@ describe('CreateInstanceForm', () => {
 
   it('renders submit button', () => {
     render(<CreateInstanceForm {...defaultProps} />)
-    expect(screen.getByRole('button', { name: /create instance/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /create instance/i }),
+    ).toBeInTheDocument()
   })
 
   it('disables submit button when form is incomplete', () => {
     render(<CreateInstanceForm {...defaultProps} />)
-    expect(screen.getByRole('button', { name: /create instance/i })).toBeDisabled()
+    expect(
+      screen.getByRole('button', { name: /create instance/i }),
+    ).toBeDisabled()
   })
 
   it('shows loading state on submit button', () => {

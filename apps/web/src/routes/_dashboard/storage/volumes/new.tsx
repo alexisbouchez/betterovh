@@ -1,8 +1,12 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import type {CreateVolumeFormData} from '@/components/storage/create-volume-form';
 import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { CreateVolumeForm, type CreateVolumeFormData } from '@/components/storage/create-volume-form'
+import {
+  CreateVolumeForm
+  
+} from '@/components/storage/create-volume-form'
 import { useCreateVolume } from '@/lib/queries/volumes'
 import { useRegions } from '@/lib/queries/catalog'
 import { useNotificationStore } from '@/lib/notification-store'

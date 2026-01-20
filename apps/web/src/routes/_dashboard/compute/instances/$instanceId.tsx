@@ -1,26 +1,34 @@
-import { createFileRoute, useParams, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, useParams } from '@tanstack/react-router'
 import { useProjectId } from '@/lib/project-context'
 import {
+  useDeleteInstance,
   useInstance,
+  useRebootInstance,
   useStartInstance,
   useStopInstance,
-  useRebootInstance,
-  useDeleteInstance,
 } from '@/lib/queries/instances'
 import { useNotificationStore } from '@/lib/notification-store'
 import { InstanceHeader } from '@/components/instances/instance-header'
 import { InstanceOverview } from '@/components/instances/instance-overview'
 
-export const Route = createFileRoute('/_dashboard/compute/instances/$instanceId')({
+export const Route = createFileRoute(
+  '/_dashboard/compute/instances/$instanceId',
+)({
   component: InstanceDetailPage,
 })
 
 export function InstanceDetailPage() {
-  const { instanceId } = useParams({ from: '/_dashboard/compute/instances/$instanceId' })
+  const { instanceId } = useParams({
+    from: '/_dashboard/compute/instances/$instanceId',
+  })
   const navigate = useNavigate()
   const projectId = useProjectId()
 
-  const { data: instance, isLoading, error } = useInstance(projectId, instanceId)
+  const {
+    data: instance,
+    isLoading,
+    error,
+  } = useInstance(projectId, instanceId)
   const startMutation = useStartInstance()
   const stopMutation = useStopInstance()
   const rebootMutation = useRebootInstance()

@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { ThemeToggle } from './theme-toggle'
 import { ThemeProvider } from './theme-provider'
 
@@ -22,10 +21,10 @@ describe('ThemeToggle', () => {
     render(
       <ThemeProvider>
         <ThemeToggle />
-      </ThemeProvider>
+      </ThemeProvider>,
     )
     expect(
-      screen.getByRole('button', { name: /toggle theme/i })
+      screen.getByRole('button', { name: /toggle theme/i }),
     ).toBeInTheDocument()
   })
 
@@ -33,17 +32,19 @@ describe('ThemeToggle', () => {
     render(
       <ThemeProvider>
         <ThemeToggle />
-      </ThemeProvider>
+      </ThemeProvider>,
     )
     // Component should have proper accessibility
-    expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /toggle theme/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders with accessible toggle button', () => {
     render(
       <ThemeProvider>
         <ThemeToggle />
-      </ThemeProvider>
+      </ThemeProvider>,
     )
     // Component should render without crashing and have the toggle button
     const button = screen.getByRole('button', { name: /toggle theme/i })

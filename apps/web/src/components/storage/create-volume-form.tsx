@@ -24,7 +24,7 @@ export interface CreateVolumeFormData {
 }
 
 export interface CreateVolumeFormProps {
-  regions: Region[]
+  regions: Array<Region>
   onSubmit: (data: CreateVolumeFormData) => void
   onCancel?: () => void
   isSubmitting?: boolean
@@ -82,7 +82,7 @@ export function CreateVolumeForm({
         <Select
           value={region}
           onValueChange={(value) => {
-            setRegion(value)
+            if (value) setRegion(value)
             setTouched((prev) => ({ ...prev, region: true }))
           }}
         >

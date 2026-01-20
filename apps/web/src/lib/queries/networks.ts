@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export interface Subnet {
   id: string
@@ -11,16 +11,16 @@ export interface Network {
   id: string
   name: string
   status: 'ACTIVE' | 'BUILD' | 'DOWN' | 'ERROR'
-  regions: string[]
+  regions: Array<string>
   vlanId?: number
-  subnets: Subnet[]
+  subnets: Array<Subnet>
   createdAt: string
 }
 
 export interface CreateNetworkParams {
   projectId: string
   name: string
-  regions: string[]
+  regions: Array<string>
   vlanId?: number
 }
 
@@ -36,8 +36,10 @@ export interface CreateSubnetParams {
 // API base URL
 const API_BASE = '/api/ovh'
 
-async function fetchNetworks(projectId: string): Promise<Network[]> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/network/private`)
+async function fetchNetworks(projectId: string): Promise<Array<Network>> {
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/network/private`,
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -47,8 +49,13 @@ async function fetchNetworks(projectId: string): Promise<Network[]> {
   return response.json()
 }
 
-async function fetchNetwork(projectId: string, networkId: string): Promise<Network> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/network/private/${networkId}`)
+async function fetchNetwork(
+  projectId: string,
+  networkId: string,
+): Promise<Network> {
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/network/private/${networkId}`,
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -60,11 +67,14 @@ async function fetchNetwork(projectId: string, networkId: string): Promise<Netwo
 
 async function createNetwork(params: CreateNetworkParams): Promise<Network> {
   const { projectId, ...body } = params
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/network/private`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/network/private`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -74,10 +84,16 @@ async function createNetwork(params: CreateNetworkParams): Promise<Network> {
   return response.json()
 }
 
-async function deleteNetwork(projectId: string, networkId: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/network/private/${networkId}`, {
-    method: 'DELETE',
-  })
+async function deleteNetwork(
+  projectId: string,
+  networkId: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/network/private/${networkId}`,
+    {
+      method: 'DELETE',
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -93,7 +109,7 @@ async function createSubnet(params: CreateSubnetParams): Promise<Subnet> {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    }
+    },
   )
 
   if (!response.ok) {
@@ -107,11 +123,11 @@ async function createSubnet(params: CreateSubnetParams): Promise<Subnet> {
 async function deleteSubnet(
   projectId: string,
   networkId: string,
-  subnetId: string
+  subnetId: string,
 ): Promise<void> {
   const response = await fetch(
     `${API_BASE}/cloud/project/${projectId}/network/private/${networkId}/subnet/${subnetId}`,
-    { method: 'DELETE' }
+    { method: 'DELETE' },
   )
 
   if (!response.ok) {
@@ -155,8 +171,13 @@ export function useDeleteNetwork() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ projectId, networkId }: { projectId: string; networkId: string }) =>
-      deleteNetwork(projectId, networkId),
+    mutationFn: ({
+      projectId,
+      networkId,
+    }: {
+      projectId: string
+      networkId: string
+    }) => deleteNetwork(projectId, networkId),
     onSuccess: (_, { projectId }) => {
       queryClient.invalidateQueries({ queryKey: ['networks', projectId] })
     },
@@ -169,7 +190,9 @@ export function useCreateSubnet() {
   return useMutation({
     mutationFn: (params: CreateSubnetParams) => createSubnet(params),
     onSuccess: (_, { projectId, networkId }) => {
-      queryClient.invalidateQueries({ queryKey: ['network', projectId, networkId] })
+      queryClient.invalidateQueries({
+        queryKey: ['network', projectId, networkId],
+      })
       queryClient.invalidateQueries({ queryKey: ['networks', projectId] })
     },
   })
@@ -189,7 +212,9 @@ export function useDeleteSubnet() {
       subnetId: string
     }) => deleteSubnet(projectId, networkId, subnetId),
     onSuccess: (_, { projectId, networkId }) => {
-      queryClient.invalidateQueries({ queryKey: ['network', projectId, networkId] })
+      queryClient.invalidateQueries({
+        queryKey: ['network', projectId, networkId],
+      })
       queryClient.invalidateQueries({ queryKey: ['networks', projectId] })
     },
   })

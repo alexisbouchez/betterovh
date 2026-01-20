@@ -1,16 +1,16 @@
 import React from 'react'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { http, HttpResponse } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { server } from '../../__mocks__/server'
 import {
-  useInstances,
+  useDeleteInstance,
   useInstance,
+  useInstances,
+  useRebootInstance,
   useStartInstance,
   useStopInstance,
-  useRebootInstance,
-  useDeleteInstance,
 } from './instances'
 
 const createWrapper = () => {
@@ -64,7 +64,7 @@ describe('instances queries', () => {
       server.use(
         http.get('*/cloud/project/:projectId/instance', () => {
           return HttpResponse.json(mockInstances)
-        })
+        }),
       )
 
       const { result } = renderHook(() => useInstances('project-1'), {
@@ -83,9 +83,9 @@ describe('instances queries', () => {
         http.get('*/cloud/project/:projectId/instance', () => {
           return HttpResponse.json(
             { errorCode: 'NOT_FOUND', message: 'Project not found' },
-            { status: 404 }
+            { status: 404 },
           )
-        })
+        }),
       )
 
       const { result } = renderHook(() => useInstances('invalid-project'), {
@@ -100,7 +100,7 @@ describe('instances queries', () => {
       server.use(
         http.get('*/cloud/project/:projectId/instance', () => {
           return HttpResponse.json([])
-        })
+        }),
       )
 
       const { result } = renderHook(() => useInstances('project-1'), {
@@ -117,13 +117,12 @@ describe('instances queries', () => {
       server.use(
         http.get('*/cloud/project/:projectId/instance/:instanceId', () => {
           return HttpResponse.json(mockInstances[0])
-        })
+        }),
       )
 
-      const { result } = renderHook(
-        () => useInstance('project-1', 'i-1'),
-        { wrapper: createWrapper() }
-      )
+      const { result } = renderHook(() => useInstance('project-1', 'i-1'), {
+        wrapper: createWrapper(),
+      })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
@@ -137,14 +136,14 @@ describe('instances queries', () => {
         http.get('*/cloud/project/:projectId/instance/:instanceId', () => {
           return HttpResponse.json(
             { errorCode: 'NOT_FOUND', message: 'Instance not found' },
-            { status: 404 }
+            { status: 404 },
           )
-        })
+        }),
       )
 
       const { result } = renderHook(
         () => useInstance('project-1', 'non-existent'),
-        { wrapper: createWrapper() }
+        { wrapper: createWrapper() },
       )
 
       await waitFor(() => expect(result.current.isError).toBe(true))
@@ -155,10 +154,13 @@ describe('instances queries', () => {
     it('starts instance successfully', async () => {
       let startCalled = false
       server.use(
-        http.post('*/cloud/project/:projectId/instance/:instanceId/start', () => {
-          startCalled = true
-          return new HttpResponse(null, { status: 204 })
-        })
+        http.post(
+          '*/cloud/project/:projectId/instance/:instanceId/start',
+          () => {
+            startCalled = true
+            return new HttpResponse(null, { status: 204 })
+          },
+        ),
       )
 
       const { result } = renderHook(() => useStartInstance(), {
@@ -176,10 +178,13 @@ describe('instances queries', () => {
     it('stops instance successfully', async () => {
       let stopCalled = false
       server.use(
-        http.post('*/cloud/project/:projectId/instance/:instanceId/stop', () => {
-          stopCalled = true
-          return new HttpResponse(null, { status: 204 })
-        })
+        http.post(
+          '*/cloud/project/:projectId/instance/:instanceId/stop',
+          () => {
+            stopCalled = true
+            return new HttpResponse(null, { status: 204 })
+          },
+        ),
       )
 
       const { result } = renderHook(() => useStopInstance(), {
@@ -197,11 +202,14 @@ describe('instances queries', () => {
     it('reboots instance with soft reboot by default', async () => {
       let rebootType: string | undefined
       server.use(
-        http.post('*/cloud/project/:projectId/instance/:instanceId/reboot', async ({ request }) => {
-          const body = await request.json() as { type?: string }
-          rebootType = body.type
-          return new HttpResponse(null, { status: 204 })
-        })
+        http.post(
+          '*/cloud/project/:projectId/instance/:instanceId/reboot',
+          async ({ request }) => {
+            const body = (await request.json()) as { type?: string }
+            rebootType = body.type
+            return new HttpResponse(null, { status: 204 })
+          },
+        ),
       )
 
       const { result } = renderHook(() => useRebootInstance(), {
@@ -217,18 +225,25 @@ describe('instances queries', () => {
     it('supports hard reboot', async () => {
       let rebootType: string | undefined
       server.use(
-        http.post('*/cloud/project/:projectId/instance/:instanceId/reboot', async ({ request }) => {
-          const body = await request.json() as { type?: string }
-          rebootType = body.type
-          return new HttpResponse(null, { status: 204 })
-        })
+        http.post(
+          '*/cloud/project/:projectId/instance/:instanceId/reboot',
+          async ({ request }) => {
+            const body = (await request.json()) as { type?: string }
+            rebootType = body.type
+            return new HttpResponse(null, { status: 204 })
+          },
+        ),
       )
 
       const { result } = renderHook(() => useRebootInstance(), {
         wrapper: createWrapper(),
       })
 
-      result.current.mutate({ projectId: 'project-1', instanceId: 'i-1', type: 'hard' })
+      result.current.mutate({
+        projectId: 'project-1',
+        instanceId: 'i-1',
+        type: 'hard',
+      })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
       expect(rebootType).toBe('hard')
@@ -242,7 +257,7 @@ describe('instances queries', () => {
         http.delete('*/cloud/project/:projectId/instance/:instanceId', () => {
           deleteCalled = true
           return new HttpResponse(null, { status: 204 })
-        })
+        }),
       )
 
       const { result } = renderHook(() => useDeleteInstance(), {

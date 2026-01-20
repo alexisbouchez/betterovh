@@ -1,11 +1,10 @@
-import { createFileRoute, useParams, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, useParams } from '@tanstack/react-router'
 import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
-  useVolume,
-  useAttachVolume,
-  useDetachVolume,
   useDeleteVolume,
+  useDetachVolume,
+  useVolume,
 } from '@/lib/queries/volumes'
 import { useNotificationStore } from '@/lib/notification-store'
 import { VolumeHeader } from '@/components/storage/volume-header'
@@ -17,12 +16,13 @@ export const Route = createFileRoute('/_dashboard/storage/volumes/$volumeId')({
 })
 
 export function VolumeDetailPage() {
-  const { volumeId } = useParams({ from: '/_dashboard/storage/volumes/$volumeId' })
+  const { volumeId } = useParams({
+    from: '/_dashboard/storage/volumes/$volumeId',
+  })
   const navigate = useNavigate()
   const projectId = useProjectId()
 
   const { data: volume, isLoading, error } = useVolume(projectId, volumeId)
-  const attachMutation = useAttachVolume()
   const detachMutation = useDetachVolume()
   const deleteMutation = useDeleteVolume()
   const { addNotification } = useNotificationStore()
@@ -31,7 +31,7 @@ export function VolumeDetailPage() {
     navigate({ to: '/storage/volumes' })
   }
 
-  const handleAttach = async (id: string) => {
+  const handleAttach = async (_id: string) => {
     // TODO: Show modal to select instance
     addNotification({
       type: 'info',
@@ -118,7 +118,9 @@ export function VolumeDetailPage() {
                 </div>
                 <div className="flex justify-between py-2">
                   <span className="text-muted-foreground">Created</span>
-                  <span className="font-medium">{formatDate(volume.createdAt, { includeTime: true })}</span>
+                  <span className="font-medium">
+                    {formatDate(volume.createdAt, { includeTime: true })}
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -136,14 +138,14 @@ export function VolumeDetailPage() {
                     <CopyableText value={volume.attachedTo} />
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    This volume is currently attached to an instance.
-                    Detach it before deleting or attaching to another instance.
+                    This volume is currently attached to an instance. Detach it
+                    before deleting or attaching to another instance.
                   </p>
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  This volume is not attached to any instance.
-                  Click "Attach" to attach it to an instance.
+                  This volume is not attached to any instance. Click "Attach" to
+                  attach it to an instance.
                 </p>
               )}
             </CardContent>

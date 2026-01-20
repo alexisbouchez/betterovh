@@ -1,16 +1,25 @@
+import { HugeiconsIcon } from '@hugeicons/react'
+import {
+  HelpCircleIcon,
+  LogoutIcon,
+  NotificationIcon,
+  Tick02Icon,
+} from '@hugeicons/core-free-icons'
+import type {Notification, NotificationType} from '@/lib/notification-store';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { Tick02Icon, LogoutIcon, HelpCircleIcon, NotificationIcon } from '@hugeicons/core-free-icons'
-import { useNotificationStore, type Notification, type NotificationType } from '@/lib/notification-store'
+import {
+  
+  
+  useNotificationStore
+} from '@/lib/notification-store'
 import { cn } from '@/lib/utils'
-import type { IconDescriptor } from '@hugeicons/react'
 
-const typeIcons: Record<NotificationType, IconDescriptor> = {
+const typeIcons: Record<NotificationType, typeof Tick02Icon> = {
   success: Tick02Icon,
   error: LogoutIcon,
   warning: HelpCircleIcon,
@@ -45,20 +54,23 @@ interface NotificationItemProps {
   onMarkAsRead: (id: string) => void
 }
 
-function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
+function NotificationItem({
+  notification,
+  onMarkAsRead,
+}: NotificationItemProps) {
   return (
     <div
       data-testid={`notification-${notification.type}`}
       className={cn(
         'flex items-start gap-3 p-3 transition-colors cursor-pointer hover:bg-muted/50',
-        !notification.read && 'bg-muted/30'
+        !notification.read && 'bg-muted/30',
       )}
       onClick={() => onMarkAsRead(notification.id)}
     >
       <div
         className={cn(
           'flex h-6 w-6 shrink-0 items-center justify-center rounded-full',
-          typeColors[notification.type]
+          typeColors[notification.type],
         )}
       >
         <HugeiconsIcon icon={typeIcons[notification.type]} size={14} />
@@ -84,7 +96,8 @@ function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps)
 }
 
 export function NotificationCenter() {
-  const { notifications, markAsRead, markAllAsRead, clearAll, getUnreadCount } = useNotificationStore()
+  const { notifications, markAsRead, markAllAsRead, clearAll, getUnreadCount } =
+    useNotificationStore()
   const unreadCount = getUnreadCount()
 
   return (
@@ -105,7 +118,9 @@ export function NotificationCenter() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <div className="flex items-center justify-between px-2 py-1.5">
-          <span className="text-xs text-muted-foreground font-medium">Notifications</span>
+          <span className="text-xs text-muted-foreground font-medium">
+            Notifications
+          </span>
           <div className="flex gap-1">
             {notifications.length > 0 && (
               <>

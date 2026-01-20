@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { HttpResponse, http } from 'msw'
 
 export const handlers = [
   // Account info
@@ -32,7 +32,7 @@ export const handlers = [
         status: 'BUILD',
         region: body.region,
       },
-      { status: 201 }
+      { status: 201 },
     )
   }),
 

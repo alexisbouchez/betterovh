@@ -1,3 +1,5 @@
+import { SettingsIcon } from '@hugeicons/core-free-icons'
+import type { SSHKey } from '@/lib/queries/ssh-keys'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
@@ -11,12 +13,10 @@ import {
 } from '@/components/ui/table'
 import { DeleteConfirmDialog } from '@/components/confirm-dialog'
 import { EmptyState } from '@/components/empty-state'
-import { SettingsIcon } from '@hugeicons/core-free-icons'
 import { formatDate } from '@/lib/utils'
-import type { SSHKey } from '@/lib/queries/ssh-keys'
 
 export interface SSHKeysTableProps {
-  sshKeys: SSHKey[]
+  sshKeys: Array<SSHKey>
   isLoading?: boolean
   error?: Error
   onDelete?: (keyId: string) => Promise<void> | void
@@ -48,7 +48,12 @@ function TableSkeleton() {
   )
 }
 
-export function SSHKeysTable({ sshKeys, isLoading, error, onDelete }: SSHKeysTableProps) {
+export function SSHKeysTable({
+  sshKeys,
+  isLoading,
+  error,
+  onDelete,
+}: SSHKeysTableProps) {
   if (error) {
     return <ErrorState message="Failed to load SSH keys" />
   }

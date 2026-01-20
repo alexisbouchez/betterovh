@@ -1,6 +1,10 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest'
-import { render, screen, waitFor } from '../../../../test-utils'
-import userEvent from '@testing-library/user-event'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { render, screen } from '../../../../test-utils'
+
+import { InstanceDetailPage } from './$instanceId'
+import type { Instance } from '@/lib/queries/instances'
+
+// Import after mocks
 
 // Mock the queries module
 const mockUseInstance = vi.fn()
@@ -31,11 +35,6 @@ vi.mock('@tanstack/react-router', () => ({
 vi.mock('@/lib/project-context', () => ({
   useProjectId: () => 'default',
 }))
-
-import type { Instance } from '@/lib/queries/instances'
-
-// Import after mocks
-import { InstanceDetailPage } from './$instanceId'
 
 const mockInstance: Instance = {
   id: 'i-1',

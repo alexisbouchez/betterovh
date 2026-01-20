@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useProjectId } from '@/lib/project-context'
 import { Button } from '@/components/ui/button'
 import { SSHKeysTable } from '@/components/ssh-keys/ssh-keys-table'
-import { useSSHKeys, useDeleteSSHKey } from '@/lib/queries/ssh-keys'
+import { useDeleteSSHKey, useSSHKeys } from '@/lib/queries/ssh-keys'
 import { useNotificationStore } from '@/lib/notification-store'
 
 export const Route = createFileRoute('/_dashboard/project/ssh-keys/')({
@@ -42,9 +42,7 @@ export function SSHKeysListPage() {
             Manage your SSH keys for instance access
           </p>
         </div>
-        <Button asChild>
-          <Link to="/project/ssh-keys/new">Add SSH Key</Link>
-        </Button>
+        <Button disabled>Add SSH Key (Coming Soon)</Button>
       </div>
 
       <SSHKeysTable

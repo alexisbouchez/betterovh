@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../test-utils'
+import { beforeEach, describe, expect, it } from 'vitest'
 import userEvent from '@testing-library/user-event'
+import { render, screen, waitFor } from '../test-utils'
 import { NotificationCenter } from './notification-center'
 import { useNotificationStore } from '@/lib/notification-store'
 
@@ -11,7 +11,9 @@ describe('NotificationCenter', () => {
 
   it('renders notification bell button', () => {
     render(<NotificationCenter />)
-    expect(screen.getByRole('button', { name: /notifications/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /notifications/i }),
+    ).toBeInTheDocument()
   })
 
   it('shows unread count badge when notifications exist', () => {

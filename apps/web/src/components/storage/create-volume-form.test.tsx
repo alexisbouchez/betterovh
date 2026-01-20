@@ -1,7 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { CreateVolumeForm, type CreateVolumeFormProps } from './create-volume-form'
+import { render, screen, waitFor } from '../../test-utils'
+import {
+  CreateVolumeForm
+  
+} from './create-volume-form'
+import type {CreateVolumeFormProps} from './create-volume-form';
 
 const mockRegions = [
   { name: 'GRA11', datacenterLocation: 'Gravelines, France' },
@@ -36,12 +40,16 @@ describe('CreateVolumeForm', () => {
 
   it('renders submit button', () => {
     render(<CreateVolumeForm {...defaultProps} />)
-    expect(screen.getByRole('button', { name: /create volume/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /create volume/i }),
+    ).toBeInTheDocument()
   })
 
   it('disables submit button when form is incomplete', () => {
     render(<CreateVolumeForm {...defaultProps} />)
-    expect(screen.getByRole('button', { name: /create volume/i })).toBeDisabled()
+    expect(
+      screen.getByRole('button', { name: /create volume/i }),
+    ).toBeDisabled()
   })
 
   it('shows loading state on submit button', () => {

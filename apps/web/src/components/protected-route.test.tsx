@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '../test-utils'
 import { ProtectedRoute } from './protected-route'
 
@@ -33,7 +33,7 @@ describe('ProtectedRoute', () => {
     render(
       <ProtectedRoute>
         <div>Protected Content</div>
-      </ProtectedRoute>
+      </ProtectedRoute>,
     )
 
     // Should show loading first, then content
@@ -47,7 +47,7 @@ describe('ProtectedRoute', () => {
     render(
       <ProtectedRoute>
         <div>Protected Content</div>
-      </ProtectedRoute>
+      </ProtectedRoute>,
     )
 
     expect(screen.getByTestId('auth-loading')).toBeInTheDocument()

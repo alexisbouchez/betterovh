@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { createQueryClient, queryClientConfig } from './query-client'
 
 describe('queryClientConfig', () => {
@@ -8,7 +8,7 @@ describe('queryClientConfig', () => {
 
   it('has stale time set to 5 minutes', () => {
     expect(queryClientConfig.defaultOptions?.queries?.staleTime).toBe(
-      5 * 60 * 1000
+      5 * 60 * 1000,
     )
   })
 

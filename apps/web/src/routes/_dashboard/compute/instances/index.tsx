@@ -1,17 +1,14 @@
 import { useState } from 'react'
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { useProjectId } from '@/lib/project-context'
 import { InstancesTable } from '@/components/instances/instances-table'
 import { BulkActions } from '@/components/instances/bulk-actions'
-import { InstanceActions } from '@/components/instances/instance-actions'
 import {
+  useDeleteInstance,
   useInstances,
   useStartInstance,
   useStopInstance,
-  useRebootInstance,
-  useDeleteInstance,
-  type Instance,
 } from '@/lib/queries/instances'
 import { useNotificationStore } from '@/lib/notification-store'
 
@@ -22,12 +19,11 @@ export const Route = createFileRoute('/_dashboard/compute/instances/')({
 function InstancesListPage() {
   const navigate = useNavigate()
   const projectId = useProjectId()
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<Array<string>>([])
 
   const { data: instances, isLoading, error } = useInstances(projectId)
   const startMutation = useStartInstance()
   const stopMutation = useStopInstance()
-  const rebootMutation = useRebootInstance()
   const deleteMutation = useDeleteInstance()
   const { addNotification } = useNotificationStore()
 
@@ -60,23 +56,6 @@ function InstancesListPage() {
       addNotification({
         type: 'error',
         title: 'Failed to stop instance',
-        message: error instanceof Error ? error.message : 'Unknown error',
-      })
-    }
-  }
-
-  const handleReboot = async (instanceId: string) => {
-    try {
-      await rebootMutation.mutateAsync({ projectId, instanceId })
-      addNotification({
-        type: 'success',
-        title: 'Instance rebooting',
-        message: 'The instance is now rebooting',
-      })
-    } catch (error) {
-      addNotification({
-        type: 'error',
-        title: 'Failed to reboot instance',
         message: error instanceof Error ? error.message : 'Unknown error',
       })
     }
@@ -131,9 +110,7 @@ function InstancesListPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Instances</h1>
-          <p className="text-muted-foreground">
-            Manage your cloud instances
-          </p>
+          <p className="text-muted-foreground">Manage your cloud instances</p>
         </div>
         <Button asChild>
           <Link to="/compute/instances/new">Create Instance</Link>
@@ -159,7 +136,10 @@ function InstancesListPage() {
         selectedIds={selectedIds}
         onSelectionChange={setSelectedIds}
         onRowClick={(instance) => {
-          navigate({ to: '/compute/instances/$instanceId', params: { instanceId: instance.id } })
+          navigate({
+            to: '/compute/instances/$instanceId',
+            params: { instanceId: instance.id },
+          })
         }}
       />
     </div>

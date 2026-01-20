@@ -37,9 +37,9 @@ export interface CreateInstanceFormData {
 }
 
 export interface CreateInstanceFormProps {
-  regions: Region[]
-  flavors: Flavor[]
-  images: Image[]
+  regions: Array<Region>
+  flavors: Array<Flavor>
+  images: Array<Image>
   onSubmit: (data: CreateInstanceFormData) => void
   onCancel?: () => void
   isSubmitting?: boolean
@@ -101,7 +101,7 @@ export function CreateInstanceForm({
         <Select
           value={region}
           onValueChange={(value) => {
-            setRegion(value)
+            if (value) setRegion(value)
             setTouched((prev) => ({ ...prev, region: true }))
           }}
         >
@@ -130,7 +130,7 @@ export function CreateInstanceForm({
         <Select
           value={flavorId}
           onValueChange={(value) => {
-            setFlavorId(value)
+            if (value) setFlavorId(value)
             setTouched((prev) => ({ ...prev, flavorId: true }))
           }}
         >
@@ -159,7 +159,7 @@ export function CreateInstanceForm({
         <Select
           value={imageId}
           onValueChange={(value) => {
-            setImageId(value)
+            if (value) setImageId(value)
             setTouched((prev) => ({ ...prev, imageId: true }))
           }}
         >

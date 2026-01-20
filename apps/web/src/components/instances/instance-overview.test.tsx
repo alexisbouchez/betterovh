@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { render, screen } from '../../test-utils'
-import { InstanceOverview, type InstanceOverviewProps } from './instance-overview'
+import { InstanceOverview } from './instance-overview'
 import type { Instance } from '@/lib/queries/instances'
 
 const mockInstance: Instance = {

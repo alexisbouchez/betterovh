@@ -1,8 +1,8 @@
+import type { Instance, InstanceIPAddress } from '@/lib/queries/instances'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CopyableText } from '@/components/copy-button'
 import { formatDate } from '@/lib/utils'
-import type { Instance, InstanceIPAddress } from '@/lib/queries/instances'
 
 export interface InstanceOverviewProps {
   instance?: Instance
@@ -51,7 +51,7 @@ function DetailRow({ label, value }: DetailRowProps) {
 
 interface IPListProps {
   title: string
-  ips: InstanceIPAddress[]
+  ips: Array<InstanceIPAddress>
 }
 
 function IPList({ title, ips }: IPListProps) {
@@ -74,7 +74,10 @@ function IPList({ title, ips }: IPListProps) {
   )
 }
 
-export function InstanceOverview({ instance, isLoading }: InstanceOverviewProps) {
+export function InstanceOverview({
+  instance,
+  isLoading,
+}: InstanceOverviewProps) {
   if (isLoading) {
     return <OverviewSkeleton />
   }
@@ -93,11 +96,17 @@ export function InstanceOverview({ instance, isLoading }: InstanceOverviewProps)
           <CardTitle className="text-lg">Instance Details</CardTitle>
         </CardHeader>
         <CardContent>
-          <DetailRow label="Instance ID" value={<CopyableText value={instance.id} />} />
+          <DetailRow
+            label="Instance ID"
+            value={<CopyableText value={instance.id} />}
+          />
           <DetailRow label="Region" value={instance.region} />
           <DetailRow label="Flavor" value={instance.flavorId} />
           <DetailRow label="Image" value={instance.imageId} />
-          <DetailRow label="Created" value={formatDate(instance.created, { includeTime: true })} />
+          <DetailRow
+            label="Created"
+            value={formatDate(instance.created, { includeTime: true })}
+          />
         </CardContent>
       </Card>
 
@@ -109,7 +118,9 @@ export function InstanceOverview({ instance, isLoading }: InstanceOverviewProps)
           <IPList title="Public IPs" ips={publicIPs} />
           <IPList title="Private IPs" ips={privateIPs} />
           {instance.ipAddresses.length === 0 && (
-            <p className="text-sm text-muted-foreground">No IP addresses assigned</p>
+            <p className="text-sm text-muted-foreground">
+              No IP addresses assigned
+            </p>
           )}
         </CardContent>
       </Card>

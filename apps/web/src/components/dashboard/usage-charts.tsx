@@ -11,9 +11,9 @@ export interface UsageChartsProps {
   isLoading?: boolean
   error?: Error | null
   data?: {
-    cpu: UsageDataPoint[]
-    memory: UsageDataPoint[]
-    bandwidth: UsageDataPoint[]
+    cpu: Array<UsageDataPoint>
+    memory: Array<UsageDataPoint>
+    bandwidth: Array<UsageDataPoint>
   }
 }
 
@@ -31,7 +31,7 @@ function ChartSkeleton() {
 }
 
 interface SimpleChartProps {
-  data: UsageDataPoint[]
+  data: Array<UsageDataPoint>
   unit: string
   color: string
 }
@@ -41,7 +41,7 @@ function SimpleChart({ data, unit, color }: SimpleChartProps) {
 
   return (
     <div className="flex h-48 items-end gap-1">
-      {data.map((point, index) => (
+      {data.map((point) => (
         <div
           key={point.date}
           className="flex-1 flex flex-col items-center gap-1"
@@ -56,7 +56,10 @@ function SimpleChart({ data, unit, color }: SimpleChartProps) {
             title={`${point.date}: ${point.value}${unit}`}
           />
           <span className="text-xs text-muted-foreground truncate w-full text-center">
-            {new Date(point.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            {new Date(point.date).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+            })}
           </span>
         </div>
       ))}
@@ -83,7 +86,9 @@ export function UsageCharts({ isLoading, error, data }: UsageChartsProps) {
     return (
       <Card>
         <CardContent className="py-8">
-          <p className="text-center text-muted-foreground">No usage data available</p>
+          <p className="text-center text-muted-foreground">
+            No usage data available
+          </p>
         </CardContent>
       </Card>
     )
@@ -105,7 +110,11 @@ export function UsageCharts({ isLoading, error, data }: UsageChartsProps) {
           <CardTitle className="text-sm font-medium">Memory Usage</CardTitle>
         </CardHeader>
         <CardContent>
-          <SimpleChart data={data.memory} unit="%" color="hsl(var(--chart-2))" />
+          <SimpleChart
+            data={data.memory}
+            unit="%"
+            color="hsl(var(--chart-2))"
+          />
         </CardContent>
       </Card>
 
@@ -114,7 +123,11 @@ export function UsageCharts({ isLoading, error, data }: UsageChartsProps) {
           <CardTitle className="text-sm font-medium">Bandwidth</CardTitle>
         </CardHeader>
         <CardContent>
-          <SimpleChart data={data.bandwidth} unit=" GB" color="hsl(var(--chart-3))" />
+          <SimpleChart
+            data={data.bandwidth}
+            unit=" GB"
+            color="hsl(var(--chart-3))"
+          />
         </CardContent>
       </Card>
     </div>

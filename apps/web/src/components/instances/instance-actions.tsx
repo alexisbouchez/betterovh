@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { Instance } from '@/lib/queries/instances'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +17,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import type { Instance } from '@/lib/queries/instances'
 
 export interface InstanceActionsProps {
   instance: Instance
@@ -36,7 +36,8 @@ export function InstanceActions({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const isRunning = instance.status === 'ACTIVE'
-  const isStopped = instance.status === 'STOPPED' || instance.status === 'SHUTOFF'
+  const isStopped =
+    instance.status === 'STOPPED' || instance.status === 'SHUTOFF'
 
   const handleStart = () => {
     onStart?.(instance.id)
@@ -70,18 +71,12 @@ export function InstanceActions({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {isStopped && (
-            <DropdownMenuItem onClick={handleStart}>
-              Start
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleStart}>Start</DropdownMenuItem>
           )}
           {isRunning && (
             <>
-              <DropdownMenuItem onClick={handleStop}>
-                Stop
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleReboot}>
-                Reboot
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleStop}>Stop</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleReboot}>Reboot</DropdownMenuItem>
             </>
           )}
           <DropdownMenuSeparator />
@@ -105,7 +100,10 @@ export function InstanceActions({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Confirm
             </AlertDialogAction>
           </AlertDialogFooter>

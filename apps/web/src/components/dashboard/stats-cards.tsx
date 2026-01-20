@@ -1,8 +1,13 @@
+import { HugeiconsIcon } from '@hugeicons/react'
+import {
+  ComputerIcon,
+  CreditCardIcon,
+  FloppyDiskIcon,
+  HelpCircleIcon,
+} from '@hugeicons/core-free-icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { ComputerIcon, FloppyDiskIcon, CreditCardIcon, HelpCircleIcon } from '@hugeicons/core-free-icons'
 
 export interface StatsCardsProps {
   isLoading?: boolean
@@ -57,10 +62,16 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Instances</CardTitle>
-          <HugeiconsIcon icon={ComputerIcon} size={20} className="text-muted-foreground" />
+          <HugeiconsIcon
+            icon={ComputerIcon}
+            size={20}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{data?.instances.total ?? '--'}</div>
+          <div className="text-2xl font-bold">
+            {data?.instances.total ?? '--'}
+          </div>
           {data?.instances && (
             <p className="text-xs text-muted-foreground">
               {data.instances.running} running, {data.instances.stopped} stopped
@@ -72,7 +83,11 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Storage</CardTitle>
-          <HugeiconsIcon icon={FloppyDiskIcon} size={20} className="text-muted-foreground" />
+          <HugeiconsIcon
+            icon={FloppyDiskIcon}
+            size={20}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
@@ -89,13 +104,15 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Current Spend</CardTitle>
-          <HugeiconsIcon icon={CreditCardIcon} size={20} className="text-muted-foreground" />
+          <HugeiconsIcon
+            icon={CreditCardIcon}
+            size={20}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            {data?.spend
-              ? `$${data.spend.current.toFixed(2)}`
-              : '--'}
+            {data?.spend ? `$${data.spend.current.toFixed(2)}` : '--'}
           </div>
           {data?.spend && (
             <p className="text-xs text-muted-foreground">
@@ -108,12 +125,14 @@ export function StatsCards({ isLoading, error, data }: StatsCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Alerts</CardTitle>
-          <HugeiconsIcon icon={HelpCircleIcon} size={20} className="text-muted-foreground" />
+          <HugeiconsIcon
+            icon={HelpCircleIcon}
+            size={20}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {data?.alerts.total ?? '--'}
-          </div>
+          <div className="text-2xl font-bold">{data?.alerts.total ?? '--'}</div>
           {data?.alerts && (
             <p className="text-xs text-muted-foreground">
               {data.alerts.critical} critical, {data.alerts.warning} warning

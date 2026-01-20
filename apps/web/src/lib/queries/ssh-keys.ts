@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export interface SSHKey {
   id: string
@@ -6,7 +6,7 @@ export interface SSHKey {
   publicKey: string
   fingerprint: string
   createdAt: string
-  regions: string[]
+  regions: Array<string>
 }
 
 export interface CreateSSHKeyParams {
@@ -19,7 +19,7 @@ export interface CreateSSHKeyParams {
 // API base URL
 const API_BASE = '/api/ovh'
 
-async function fetchSSHKeys(projectId: string): Promise<SSHKey[]> {
+async function fetchSSHKeys(projectId: string): Promise<Array<SSHKey>> {
   const response = await fetch(`${API_BASE}/cloud/project/${projectId}/sshkey`)
 
   if (!response.ok) {
@@ -31,7 +31,9 @@ async function fetchSSHKeys(projectId: string): Promise<SSHKey[]> {
 }
 
 async function fetchSSHKey(projectId: string, keyId: string): Promise<SSHKey> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/sshkey/${keyId}`)
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/sshkey/${keyId}`,
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -43,11 +45,14 @@ async function fetchSSHKey(projectId: string, keyId: string): Promise<SSHKey> {
 
 async function createSSHKey(params: CreateSSHKeyParams): Promise<SSHKey> {
   const { projectId, ...body } = params
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/sshkey`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/sshkey`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -58,9 +63,12 @@ async function createSSHKey(params: CreateSSHKeyParams): Promise<SSHKey> {
 }
 
 async function deleteSSHKey(projectId: string, keyId: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/sshkey/${keyId}`, {
-    method: 'DELETE',
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/sshkey/${keyId}`,
+    {
+      method: 'DELETE',
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()

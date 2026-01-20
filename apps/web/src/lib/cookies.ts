@@ -20,11 +20,16 @@ export function setCookie(
     path?: string
     secure?: boolean
     sameSite?: 'strict' | 'lax' | 'none'
-  } = {}
+  } = {},
 ): void {
   if (typeof document === 'undefined') return
 
-  const { maxAge = 30 * 24 * 60 * 60, path = '/', secure = true, sameSite = 'lax' } = options
+  const {
+    maxAge = 30 * 24 * 60 * 60,
+    path = '/',
+    secure = true,
+    sameSite = 'lax',
+  } = options
 
   let cookie = `${name}=${value}; path=${path}; max-age=${maxAge}; samesite=${sameSite}`
   if (secure) {

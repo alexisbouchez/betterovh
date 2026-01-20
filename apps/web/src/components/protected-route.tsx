@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { getSession, type Session } from '../lib/auth'
+import {  getSession } from '../lib/auth'
 import { Skeleton } from './ui/skeleton'
+import type {Session} from '../lib/auth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode

@@ -10,6 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+
 export interface BulkActionsProps {
   selectedCount: number
   disabled?: boolean
@@ -91,10 +92,12 @@ export function BulkActions({
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete {selectedCount} Instances</AlertDialogTitle>
+            <AlertDialogTitle>
+              Delete {selectedCount} Instances
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete {selectedCount} instance{selectedCount > 1 ? 's' : ''}?
-              This action cannot be undone.
+              Are you sure you want to delete {selectedCount} instance
+              {selectedCount > 1 ? 's' : ''}? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

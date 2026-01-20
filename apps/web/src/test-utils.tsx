@@ -1,7 +1,13 @@
-import { ReactElement } from 'react'
-import { render, RenderOptions, waitFor } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createRouter, createRootRoute, createMemoryHistory } from '@tanstack/react-router'
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+} from '@tanstack/react-router'
+import type { RenderOptions } from '@testing-library/react';
+import type { ReactElement } from 'react'
 import { SidebarProvider } from '@/components/ui/sidebar'
 
 const createTestQueryClient = () =>
@@ -31,7 +37,7 @@ export function renderWithProviders(
     withSidebar = false,
     withRouter = false,
     ...renderOptions
-  }: CustomRenderOptions = {}
+  }: CustomRenderOptions = {},
 ) {
   if (withRouter) {
     // When using router, we need to create the component tree inside the route
@@ -54,7 +60,7 @@ export function renderWithProviders(
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>,
-      renderOptions
+      renderOptions,
     )
 
     return { ...result, queryClient }

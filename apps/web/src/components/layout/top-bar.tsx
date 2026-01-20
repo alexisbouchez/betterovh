@@ -1,3 +1,5 @@
+import { HugeiconsIcon } from '@hugeicons/react'
+import { SearchIcon, UserIcon } from '@hugeicons/core-free-icons'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -17,8 +19,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { SearchIcon, UserIcon } from '@hugeicons/core-free-icons'
 
 interface TopBarProps {
   breadcrumbs?: Array<{ label: string; href?: string }>

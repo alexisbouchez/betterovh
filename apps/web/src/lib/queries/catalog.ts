@@ -21,7 +21,7 @@ export interface Image {
 // API base URL
 const API_BASE = '/api/ovh'
 
-async function fetchRegions(projectId: string): Promise<Region[]> {
+async function fetchRegions(projectId: string): Promise<Array<Region>> {
   const response = await fetch(`${API_BASE}/cloud/project/${projectId}/region`)
 
   if (!response.ok) {
@@ -32,7 +32,10 @@ async function fetchRegions(projectId: string): Promise<Region[]> {
   return response.json()
 }
 
-async function fetchFlavors(projectId: string, region?: string): Promise<Flavor[]> {
+async function fetchFlavors(
+  projectId: string,
+  region?: string,
+): Promise<Array<Flavor>> {
   const url = region
     ? `${API_BASE}/cloud/project/${projectId}/flavor?region=${region}`
     : `${API_BASE}/cloud/project/${projectId}/flavor`
@@ -47,7 +50,10 @@ async function fetchFlavors(projectId: string, region?: string): Promise<Flavor[
   return response.json()
 }
 
-async function fetchImages(projectId: string, region?: string): Promise<Image[]> {
+async function fetchImages(
+  projectId: string,
+  region?: string,
+): Promise<Array<Image>> {
   const url = region
     ? `${API_BASE}/cloud/project/${projectId}/image?region=${region}`
     : `${API_BASE}/cloud/project/${projectId}/image`

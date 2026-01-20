@@ -1,4 +1,12 @@
 import { Link, useLocation } from '@tanstack/react-router'
+import { HugeiconsIcon } from '@hugeicons/react'
+import {
+  ComputerIcon,
+  FloppyDiskIcon,
+  LayoutIcon,
+  SettingsIcon,
+  ShieldIcon,
+} from '@hugeicons/core-free-icons'
 import {
   Sidebar,
   SidebarContent,
@@ -10,9 +18,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { LayoutIcon, ComputerIcon, FloppyDiskIcon, ShieldIcon, SettingsIcon } from '@hugeicons/core-free-icons'
-import type { IconDescriptor } from '@hugeicons/react'
 
 const navItems = {
   main: [{ title: 'Dashboard', href: '/', icon: LayoutIcon }],
@@ -35,7 +40,7 @@ function NavGroup({
   items,
 }: {
   label?: string
-  items: Array<{ title: string; href: string; icon: IconDescriptor }>
+  items: Array<{ title: string; href: string; icon: typeof LayoutIcon }>
 }) {
   const location = useLocation()
 
@@ -45,11 +50,15 @@ function NavGroup({
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => {
-            const isActive = location.pathname === item.href ||
+            const isActive =
+              location.pathname === item.href ||
               (item.href !== '/' && location.pathname.startsWith(item.href))
             return (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton render={<Link to={item.href} />} isActive={isActive}>
+                <SidebarMenuButton
+                  render={<Link to={item.href} />}
+                  isActive={isActive}
+                >
                   <HugeiconsIcon icon={item.icon} size={18} />
                   <span>{item.title}</span>
                 </SidebarMenuButton>

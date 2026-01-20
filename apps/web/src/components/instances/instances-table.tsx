@@ -1,3 +1,5 @@
+import { ComputerIcon } from '@hugeicons/core-free-icons'
+import type { Instance } from '@/lib/queries/instances'
 import {
   Table,
   TableBody,
@@ -11,25 +13,24 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Checkbox } from '@/components/ui/checkbox'
 import { EmptyState } from '@/components/empty-state'
 import { ErrorState } from '@/components/error-state'
-import { ComputerIcon } from '@hugeicons/core-free-icons'
 import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
-import type { Instance } from '@/lib/queries/instances'
 import { instanceStatusConfig } from '@/lib/status-config'
 import { cn, formatDate } from '@/lib/utils'
 
 export interface InstancesTableProps {
-  instances: Instance[]
+  instances: Array<Instance>
   isLoading?: boolean
   error?: Error | null
   selectable?: boolean
-  selectedIds?: string[]
-  onSelectionChange?: (selectedIds: string[]) => void
+  selectedIds?: Array<string>
+  onSelectionChange?: (selectedIds: Array<string>) => void
   onRowClick?: (instance: Instance) => void
 }
 
-
 function getPublicIP(instance: Instance): string | null {
-  const publicIP = instance.ipAddresses.find((ip) => ip.type === 'public' && ip.version === 4)
+  const publicIP = instance.ipAddresses.find(
+    (ip) => ip.type === 'public' && ip.version === 4,
+  )
   return publicIP?.ip ?? null
 }
 
@@ -88,8 +89,10 @@ export function InstancesTable({
     }
   }
 
-  const allSelected = instances.length > 0 && selectedIds.length === instances.length
-  const someSelected = selectedIds.length > 0 && selectedIds.length < instances.length
+  const allSelected =
+    instances.length > 0 && selectedIds.length === instances.length
+  const someSelected =
+    selectedIds.length > 0 && selectedIds.length < instances.length
 
   const { getRowProps } = useTableKeyboardNav({
     items: instances,
@@ -146,8 +149,9 @@ export function InstancesTable({
                   key={instance.id}
                   {...rowProps}
                   className={cn(
-                    onRowClick && 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset',
-                    isSelected && 'bg-muted/30'
+                    onRowClick &&
+                      'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset',
+                    isSelected && 'bg-muted/30',
                   )}
                   onClick={() => onRowClick?.(instance)}
                 >

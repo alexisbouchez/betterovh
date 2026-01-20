@@ -1,6 +1,6 @@
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './app-sidebar'
 import { TopBar } from './top-bar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 
 interface AppShellProps {
   children: React.ReactNode

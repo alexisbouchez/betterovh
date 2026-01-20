@@ -1,4 +1,4 @@
-import { getCookie, setCookie, deleteCookie } from './cookies'
+import { deleteCookie, getCookie, setCookie } from './cookies'
 
 const SESSION_COOKIE_NAME = 'betterovh_session'
 const SESSION_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days

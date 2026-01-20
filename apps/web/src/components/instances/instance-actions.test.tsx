@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { InstanceActions, type InstanceActionsProps } from './instance-actions'
+import { render, screen, waitFor } from '../../test-utils'
+import { InstanceActions } from './instance-actions'
 import type { Instance } from '@/lib/queries/instances'
 
 const mockActiveInstance: Instance = {
@@ -110,7 +110,9 @@ describe('InstanceActions', () => {
     const user = userEvent.setup()
     const onReboot = vi.fn()
 
-    render(<InstanceActions instance={mockActiveInstance} onReboot={onReboot} />)
+    render(
+      <InstanceActions instance={mockActiveInstance} onReboot={onReboot} />,
+    )
     await user.click(screen.getByRole('button', { name: /actions/i }))
 
     await waitFor(() => {
@@ -154,7 +156,9 @@ describe('InstanceActions', () => {
     const user = userEvent.setup()
     const onDelete = vi.fn()
 
-    render(<InstanceActions instance={mockActiveInstance} onDelete={onDelete} />)
+    render(
+      <InstanceActions instance={mockActiveInstance} onDelete={onDelete} />,
+    )
     await user.click(screen.getByRole('button', { name: /actions/i }))
 
     await waitFor(() => {

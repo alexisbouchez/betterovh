@@ -1,12 +1,12 @@
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ComputerIcon, MoonIcon, SunIcon } from '@hugeicons/core-free-icons'
+import { useTheme } from './theme-provider'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { SunIcon, MoonIcon, ComputerIcon } from '@hugeicons/core-free-icons'
-import { useTheme } from './theme-provider'
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()

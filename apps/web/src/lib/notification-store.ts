@@ -22,7 +22,7 @@ export interface NotificationInput {
 }
 
 interface NotificationState {
-  notifications: Notification[]
+  notifications: Array<Notification>
   addNotification: (input: NotificationInput) => void
   removeNotification: (id: string) => void
   markAsRead: (id: string) => void
@@ -53,7 +53,8 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
     }))
 
     // Auto-dismiss: default to true for success/info, false for error/warning
-    const shouldAutoDismiss = input.autoDismiss ?? (input.type === 'success' || input.type === 'info')
+    const shouldAutoDismiss =
+      input.autoDismiss ?? (input.type === 'success' || input.type === 'info')
 
     if (shouldAutoDismiss) {
       const timeout = input.dismissTimeout ?? 5000
@@ -72,7 +73,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
   markAsRead: (id) => {
     set((state) => ({
       notifications: state.notifications.map((n) =>
-        n.id === id ? { ...n, read: true } : n
+        n.id === id ? { ...n, read: true } : n,
       ),
     }))
   },

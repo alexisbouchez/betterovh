@@ -1,3 +1,5 @@
+import { FloppyDiskIcon } from '@hugeicons/core-free-icons'
+import type { Volume } from '@/lib/queries/volumes'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
@@ -10,18 +12,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { EmptyState } from '@/components/empty-state'
-import { FloppyDiskIcon } from '@hugeicons/core-free-icons'
 import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
-import type { Volume } from '@/lib/queries/volumes'
 import { volumeStatusConfig } from '@/lib/status-config'
 
 export interface VolumesTableProps {
-  volumes: Volume[]
+  volumes: Array<Volume>
   isLoading?: boolean
   error?: Error
   onRowClick?: (volume: Volume) => void
 }
-
 
 function TableSkeleton() {
   return (
@@ -49,7 +48,12 @@ function TableSkeleton() {
   )
 }
 
-export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesTableProps) {
+export function VolumesTable({
+  volumes,
+  isLoading,
+  error,
+  onRowClick,
+}: VolumesTableProps) {
   const { getRowProps } = useTableKeyboardNav({
     items: volumes,
     onSelect: onRowClick,
@@ -95,7 +99,11 @@ export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesT
                 key={volume.id}
                 {...rowProps}
                 onClick={() => onRowClick?.(volume)}
-                className={onRowClick ? 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset' : undefined}
+                className={
+                  onRowClick
+                    ? 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset'
+                    : undefined
+                }
               >
                 <TableCell>
                   <div className="flex items-center gap-2">

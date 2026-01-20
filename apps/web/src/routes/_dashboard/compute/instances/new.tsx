@@ -1,11 +1,14 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import type {CreateInstanceFormData} from '@/components/instances/create-instance-form';
 import { useProjectId } from '@/lib/project-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { CreateInstanceForm, type CreateInstanceFormData } from '@/components/instances/create-instance-form'
+import {
+  CreateInstanceForm
+  
+} from '@/components/instances/create-instance-form'
 import { useCreateInstance } from '@/lib/queries/instances'
-import { useRegions, useFlavors, useImages } from '@/lib/queries/catalog'
+import { useFlavors, useImages, useRegions } from '@/lib/queries/catalog'
 import { useNotificationStore } from '@/lib/notification-store'
 
 export const Route = createFileRoute('/_dashboard/compute/instances/new')({
@@ -54,9 +57,7 @@ export function CreateInstancePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Create Instance</h1>
-          <p className="text-muted-foreground">
-            Launch a new cloud instance
-          </p>
+          <p className="text-muted-foreground">Launch a new cloud instance</p>
         </div>
       </div>
 

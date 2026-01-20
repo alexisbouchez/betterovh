@@ -1,9 +1,9 @@
+import type { Volume } from '@/lib/queries/volumes'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
 import { DeleteConfirmDialog } from '@/components/confirm-dialog'
-import type { Volume } from '@/lib/queries/volumes'
 import { volumeStatusConfig } from '@/lib/status-config'
 
 export interface VolumeHeaderProps {
@@ -15,7 +15,6 @@ export interface VolumeHeaderProps {
   onDetach?: (volumeId: string) => void
   onDelete?: (volumeId: string) => Promise<void> | void
 }
-
 
 function HeaderSkeleton() {
   return (

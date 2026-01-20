@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 interface Project {
   id: string
@@ -19,12 +19,15 @@ interface ProjectProviderProps {
   defaultProjectId?: string
 }
 
-export function ProjectProvider({ children, defaultProjectId = 'default' }: ProjectProviderProps) {
+export function ProjectProvider({
+  children,
+  defaultProjectId = 'default',
+}: ProjectProviderProps) {
   const [currentProject, setCurrentProjectState] = useState<Project | null>({
     id: defaultProjectId,
     name: 'Default Project',
   })
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
 
   const setCurrentProject = useCallback((project: Project) => {
     setCurrentProjectState(project)

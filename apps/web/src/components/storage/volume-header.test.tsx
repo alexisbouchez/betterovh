@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { VolumeHeader, type VolumeHeaderProps } from './volume-header'
+import { render, screen } from '../../test-utils'
+import { VolumeHeader } from './volume-header'
 import type { Volume } from '@/lib/queries/volumes'
 
 const mockVolume: Volume = {

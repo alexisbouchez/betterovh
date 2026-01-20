@@ -10,7 +10,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
 
 interface ConfirmDialogProps {
   title: string
@@ -19,7 +18,7 @@ interface ConfirmDialogProps {
   cancelLabel?: string
   variant?: 'default' | 'destructive'
   onConfirm: () => void | Promise<void>
-  trigger: React.ReactNode
+  trigger: React.ReactElement
   isLoading?: boolean
 }
 
@@ -75,7 +74,7 @@ interface DeleteConfirmDialogProps {
   itemName: string
   itemType: string
   onConfirm: () => void | Promise<void>
-  trigger: React.ReactNode
+  trigger: React.ReactElement
   isLoading?: boolean
 }
 

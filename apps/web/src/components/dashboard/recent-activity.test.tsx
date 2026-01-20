@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { render, screen } from '../../test-utils'
-import { RecentActivity, type RecentActivityProps } from './recent-activity'
+import { RecentActivity  } from './recent-activity'
+import type {RecentActivityProps} from './recent-activity';
 
 const mockData: RecentActivityProps['data'] = [
   {
@@ -37,8 +38,12 @@ describe('RecentActivity', () => {
 
   it('displays activity items with messages', () => {
     render(<RecentActivity data={mockData} />)
-    expect(screen.getByText('Instance vps-1234 was created')).toBeInTheDocument()
-    expect(screen.getByText('Instance vps-5678 was stopped')).toBeInTheDocument()
+    expect(
+      screen.getByText('Instance vps-1234 was created'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Instance vps-5678 was stopped'),
+    ).toBeInTheDocument()
     expect(screen.getByText('Invoice #12345 generated')).toBeInTheDocument()
   })
 

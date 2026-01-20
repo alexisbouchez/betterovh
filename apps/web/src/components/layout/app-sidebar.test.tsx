@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { render, screen, waitFor } from '../../test-utils'
 import { AppSidebar } from './app-sidebar'
 

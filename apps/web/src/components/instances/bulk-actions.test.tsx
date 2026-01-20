@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { BulkActions, type BulkActionsProps } from './bulk-actions'
+import { render, screen, waitFor } from '../../test-utils'
+import { BulkActions  } from './bulk-actions'
+import type {BulkActionsProps} from './bulk-actions';
 
 describe('BulkActions', () => {
   const defaultProps: BulkActionsProps = {
@@ -19,9 +20,15 @@ describe('BulkActions', () => {
 
   it('renders action buttons', () => {
     render(<BulkActions {...defaultProps} />)
-    expect(screen.getByRole('button', { name: /start all/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /stop all/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /delete all/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /start all/i }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /stop all/i }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /delete all/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders clear selection button', () => {
@@ -80,7 +87,9 @@ describe('BulkActions', () => {
     const user = userEvent.setup()
     const onClearSelection = vi.fn()
 
-    render(<BulkActions {...defaultProps} onClearSelection={onClearSelection} />)
+    render(
+      <BulkActions {...defaultProps} onClearSelection={onClearSelection} />,
+    )
     await user.click(screen.getByRole('button', { name: /clear/i }))
 
     expect(onClearSelection).toHaveBeenCalled()

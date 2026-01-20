@@ -1,17 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import {
-  getSession,
-  createSession,
-  destroySession,
-  type Session,
-} from './auth'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import {  createSession, destroySession, getSession } from './auth'
+import type {Session} from './auth';
 
 // Mock cookie storage
 const mockCookies = new Map<string, string>()
 
 vi.mock('./cookies', () => ({
   getCookie: (name: string) => mockCookies.get(name),
-  setCookie: (name: string, value: string, options?: object) =>
+  setCookie: (name: string, value: string, _options?: object) =>
     mockCookies.set(name, value),
   deleteCookie: (name: string) => mockCookies.delete(name),
 }))
@@ -79,7 +75,10 @@ describe('auth', () => {
 
   describe('destroySession', () => {
     it('clears the session cookie', async () => {
-      mockCookies.set('betterovh_session', JSON.stringify({ consumerKey: 'test' }))
+      mockCookies.set(
+        'betterovh_session',
+        JSON.stringify({ consumerKey: 'test' }),
+      )
 
       await destroySession()
 

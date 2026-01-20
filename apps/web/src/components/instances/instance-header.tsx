@@ -1,10 +1,10 @@
+import { InstanceActions } from './instance-actions'
+import type { Instance } from '@/lib/queries/instances'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
-import { InstanceActions } from './instance-actions'
 import { formatDate } from '@/lib/utils'
-import type { Instance } from '@/lib/queries/instances'
 import { instanceStatusConfig } from '@/lib/status-config'
 
 export interface InstanceHeaderProps {
@@ -18,9 +18,10 @@ export interface InstanceHeaderProps {
   onDelete?: (instanceId: string) => void
 }
 
-
 function getPublicIP(instance: Instance): string | null {
-  const publicIP = instance.ipAddresses.find((ip) => ip.type === 'public' && ip.version === 4)
+  const publicIP = instance.ipAddresses.find(
+    (ip) => ip.type === 'public' && ip.version === 4,
+  )
   return publicIP?.ip ?? null
 }
 

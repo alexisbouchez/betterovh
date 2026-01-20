@@ -1,9 +1,8 @@
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useProjectId } from '@/lib/project-context'
 import { Button } from '@/components/ui/button'
 import { VolumesTable } from '@/components/storage/volumes-table'
-import { useVolumes, useDeleteVolume } from '@/lib/queries/volumes'
-import { useNotificationStore } from '@/lib/notification-store'
+import { useVolumes } from '@/lib/queries/volumes'
 
 export const Route = createFileRoute('/_dashboard/storage/volumes/')({
   component: VolumesListPage,
@@ -14,25 +13,6 @@ export function VolumesListPage() {
   const projectId = useProjectId()
 
   const { data: volumes, isLoading, error } = useVolumes(projectId)
-  const deleteMutation = useDeleteVolume()
-  const { addNotification } = useNotificationStore()
-
-  const handleDelete = async (volumeId: string) => {
-    try {
-      await deleteMutation.mutateAsync({ projectId, volumeId })
-      addNotification({
-        type: 'success',
-        title: 'Volume deleted',
-        message: 'The volume has been deleted',
-      })
-    } catch (err) {
-      addNotification({
-        type: 'error',
-        title: 'Failed to delete volume',
-        message: err instanceof Error ? err.message : 'Unknown error',
-      })
-    }
-  }
 
   return (
     <div className="flex flex-col gap-4 p-6">
@@ -53,7 +33,10 @@ export function VolumesListPage() {
         isLoading={isLoading}
         error={error ?? undefined}
         onRowClick={(volume) => {
-          navigate({ to: '/storage/volumes/$volumeId', params: { volumeId: volume.id } })
+          navigate({
+            to: '/storage/volumes/$volumeId',
+            params: { volumeId: volume.id },
+          })
         }}
       />
     </div>

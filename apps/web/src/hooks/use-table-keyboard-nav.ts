@@ -1,12 +1,17 @@
-import { useCallback, useRef, type KeyboardEvent } from 'react'
+import {  useCallback, useRef } from 'react'
+import type {KeyboardEvent} from 'react';
 
 interface UseTableKeyboardNavOptions<T> {
-  items: T[]
+  items: Array<T>
   onSelect?: (item: T) => void
   getItemId: (item: T) => string
 }
 
-export function useTableKeyboardNav<T>({ items, onSelect, getItemId }: UseTableKeyboardNavOptions<T>) {
+export function useTableKeyboardNav<T>({
+  items,
+  onSelect,
+  getItemId,
+}: UseTableKeyboardNavOptions<T>) {
   const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map())
 
   const setRowRef = useCallback(
@@ -17,7 +22,7 @@ export function useTableKeyboardNav<T>({ items, onSelect, getItemId }: UseTableK
         rowRefs.current.delete(id)
       }
     },
-    []
+    [],
   )
 
   const handleKeyDown = useCallback(
@@ -60,7 +65,7 @@ export function useTableKeyboardNav<T>({ items, onSelect, getItemId }: UseTableK
           break
       }
     },
-    [items, onSelect, getItemId]
+    [items, onSelect, getItemId],
   )
 
   return {

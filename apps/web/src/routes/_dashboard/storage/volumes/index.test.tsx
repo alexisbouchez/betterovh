@@ -1,5 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '../../../../test-utils'
+
+// Import after mocks
+import { VolumesListPage } from './index'
 
 // Mock function
 const mockUseVolumes = vi.fn(() => ({
@@ -16,7 +19,7 @@ const mockUseVolumes = vi.fn(() => ({
     },
   ],
   isLoading: false,
-  error: null,
+  error: null as Error | null,
 }))
 
 // Mock the queries module
@@ -47,9 +50,6 @@ vi.mock('@/lib/project-context', () => ({
   useProjectId: () => 'default',
 }))
 
-// Import after mocks
-import { VolumesListPage } from './index'
-
 describe('VolumesListPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -68,18 +68,22 @@ describe('VolumesListPage', () => {
         },
       ],
       isLoading: false,
-      error: null,
+      error: null as Error | null,
     })
   })
 
   it('renders page title', () => {
     render(<VolumesListPage />)
-    expect(screen.getByRole('heading', { name: /volumes/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /volumes/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders create volume button', () => {
     render(<VolumesListPage />)
-    expect(screen.getByRole('link', { name: /create volume/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /create volume/i }),
+    ).toBeInTheDocument()
   })
 
   it('displays volumes table', () => {
@@ -89,7 +93,7 @@ describe('VolumesListPage', () => {
 
   it('shows loading state', () => {
     mockUseVolumes.mockReturnValue({
-      data: undefined,
+      data: [],
       isLoading: true,
       error: null,
     })
@@ -100,7 +104,7 @@ describe('VolumesListPage', () => {
 
   it('shows error state', () => {
     mockUseVolumes.mockReturnValue({
-      data: undefined,
+      data: [],
       isLoading: false,
       error: new Error('Failed to load'),
     })

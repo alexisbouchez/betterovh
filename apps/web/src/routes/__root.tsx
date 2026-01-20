@@ -44,9 +44,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          <ProjectProvider>
-            {children}
-          </ProjectProvider>
+          <ProjectProvider>{children}</ProjectProvider>
           <ReactQueryDevtools buttonPosition="bottom-left" />
         </QueryClientProvider>
         <TanStackDevtools

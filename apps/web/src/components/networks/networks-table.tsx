@@ -1,3 +1,5 @@
+import { ShieldIcon } from '@hugeicons/core-free-icons'
+import type { Network } from '@/lib/queries/networks'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorState } from '@/components/error-state'
@@ -10,18 +12,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { EmptyState } from '@/components/empty-state'
-import { ShieldIcon } from '@hugeicons/core-free-icons'
 import { useTableKeyboardNav } from '@/hooks/use-table-keyboard-nav'
-import type { Network } from '@/lib/queries/networks'
 import { networkStatusConfig } from '@/lib/status-config'
 
 export interface NetworksTableProps {
-  networks: Network[]
+  networks: Array<Network>
   isLoading?: boolean
   error?: Error
   onRowClick?: (network: Network) => void
 }
-
 
 function TableSkeleton() {
   return (
@@ -49,7 +48,12 @@ function TableSkeleton() {
   )
 }
 
-export function NetworksTable({ networks, isLoading, error, onRowClick }: NetworksTableProps) {
+export function NetworksTable({
+  networks,
+  isLoading,
+  error,
+  onRowClick,
+}: NetworksTableProps) {
   const { getRowProps } = useTableKeyboardNav({
     items: networks,
     onSelect: onRowClick,
@@ -96,7 +100,11 @@ export function NetworksTable({ networks, isLoading, error, onRowClick }: Networ
                 key={network.id}
                 {...rowProps}
                 onClick={() => onRowClick?.(network)}
-                className={onRowClick ? 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset' : undefined}
+                className={
+                  onRowClick
+                    ? 'cursor-pointer hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset'
+                    : undefined
+                }
               >
                 <TableCell className="font-medium">{network.name}</TableCell>
                 <TableCell>

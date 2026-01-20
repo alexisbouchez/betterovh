@@ -1,5 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '../../../../test-utils'
+
+// Import after mocks
+import { CreateInstancePage } from './new'
 
 // Mock functions defined before vi.mock
 const mockUseCreateInstance = vi.fn(() => ({
@@ -62,9 +65,6 @@ vi.mock('@/lib/project-context', () => ({
   useProjectId: () => 'default',
 }))
 
-// Import after mocks
-import { CreateInstancePage } from './new'
-
 describe('CreateInstancePage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -94,7 +94,9 @@ describe('CreateInstancePage', () => {
 
   it('renders page title', () => {
     render(<CreateInstancePage />)
-    expect(screen.getByRole('heading', { name: /create instance/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /create instance/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders the create instance form', () => {
@@ -104,7 +106,7 @@ describe('CreateInstancePage', () => {
 
   it('shows loading state when catalog data is loading', () => {
     mockUseRegions.mockReturnValue({
-      data: undefined,
+      data: [] as Array<{ name: string; datacenterLocation: string }>,
       isLoading: true,
     })
 
@@ -122,7 +124,9 @@ describe('CreateInstancePage', () => {
     render(<CreateInstancePage />)
 
     // Verify form is rendered with submit button
-    expect(screen.getByRole('button', { name: /create instance/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /create instance/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders back/cancel button', () => {

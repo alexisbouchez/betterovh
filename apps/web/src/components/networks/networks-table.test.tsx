@@ -1,19 +1,18 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { NetworksTable, type NetworksTableProps } from './networks-table'
+import { render, screen } from '../../test-utils'
+import { NetworksTable  } from './networks-table'
+import type {NetworksTableProps} from './networks-table';
 import type { Network } from '@/lib/queries/networks'
 
-const mockNetworks: Network[] = [
+const mockNetworks: Array<Network> = [
   {
     id: 'net-1',
     name: 'production-network',
     status: 'ACTIVE',
     regions: ['GRA11', 'SBG5'],
     vlanId: 100,
-    subnets: [
-      { id: 'subnet-1', cidr: '10.0.0.0/24', dhcpEnabled: true },
-    ],
+    subnets: [{ id: 'subnet-1', cidr: '10.0.0.0/24', dhcpEnabled: true }],
     createdAt: '2024-01-01T00:00:00Z',
   },
   {

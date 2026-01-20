@@ -1,10 +1,10 @@
-import { buttonVariants } from '@/components/ui/button'
 import { HugeiconsIcon } from '@hugeicons/react'
-import type { IconDescriptor } from '@hugeicons/react'
+import type { FileIcon } from '@hugeicons/core-free-icons'
+import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 interface EmptyStateProps {
-  icon?: IconDescriptor
+  icon?: typeof FileIcon
   title: string
   description: string
   actionLabel?: string
@@ -28,7 +28,9 @@ export function EmptyState({
         </div>
       )}
       <h3 className="text-lg font-medium">{title}</h3>
-      <p className="mt-1 text-sm text-muted-foreground max-w-sm">{description}</p>
+      <p className="mt-1 text-sm text-muted-foreground max-w-sm">
+        {description}
+      </p>
       {actionLabel && (actionHref || onAction) && (
         <div className="mt-4">
           {actionHref ? (

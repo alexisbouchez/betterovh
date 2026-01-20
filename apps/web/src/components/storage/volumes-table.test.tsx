@@ -1,10 +1,11 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { VolumesTable, type VolumesTableProps } from './volumes-table'
+import { render, screen } from '../../test-utils'
+import { VolumesTable  } from './volumes-table'
+import type {VolumesTableProps} from './volumes-table';
 import type { Volume } from '@/lib/queries/volumes'
 
-const mockVolumes: Volume[] = [
+const mockVolumes: Array<Volume> = [
   {
     id: 'vol-1',
     name: 'data-volume',

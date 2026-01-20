@@ -1,10 +1,11 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { SSHKeysTable, type SSHKeysTableProps } from './ssh-keys-table'
+import { render, screen, waitFor } from '../../test-utils'
+import { SSHKeysTable  } from './ssh-keys-table'
+import type {SSHKeysTableProps} from './ssh-keys-table';
 import type { SSHKey } from '@/lib/queries/ssh-keys'
 
-const mockSSHKeys: SSHKey[] = [
+const mockSSHKeys: Array<SSHKey> = [
   {
     id: 'key-1',
     name: 'my-laptop',
@@ -71,7 +72,9 @@ describe('SSHKeysTable', () => {
     await user.click(deleteButtons[0])
 
     // Confirm the deletion in the dialog
-    const confirmButton = await screen.findByRole('button', { name: /^delete$/i })
+    const confirmButton = await screen.findByRole('button', {
+      name: /^delete$/i,
+    })
     await user.click(confirmButton)
 
     await waitFor(() => {

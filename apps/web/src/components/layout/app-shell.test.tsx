@@ -1,7 +1,12 @@
-import { describe, it, expect } from 'vitest'
-import { screen, render, waitFor } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createRouter, createRootRoute, createMemoryHistory } from '@tanstack/react-router'
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+} from '@tanstack/react-router'
 import { AppShell } from './app-shell'
 
 // Minimal render for AppShell since it has its own SidebarProvider
@@ -22,7 +27,7 @@ const renderAppShell = (children: React.ReactNode) => {
   return render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   )
 }
 

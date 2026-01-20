@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '../test-utils'
-import userEvent from '@testing-library/user-event'
 import LoginPage from './login'
 
 // Mock the OVH client
@@ -17,7 +16,7 @@ describe('LoginPage', () => {
   it('renders login button', () => {
     render(<LoginPage />)
     expect(
-      screen.getByRole('button', { name: /connect with ovh/i })
+      screen.getByRole('button', { name: /connect with ovh/i }),
     ).toBeInTheDocument()
   })
 
@@ -28,8 +27,6 @@ describe('LoginPage', () => {
 
   it('shows description text', () => {
     render(<LoginPage />)
-    expect(
-      screen.getByText(/manage your ovh cloud/i)
-    ).toBeInTheDocument()
+    expect(screen.getByText(/manage your ovh cloud/i)).toBeInTheDocument()
   })
 })

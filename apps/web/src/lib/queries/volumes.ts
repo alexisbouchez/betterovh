@@ -1,11 +1,18 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export interface Volume {
   id: string
   name: string
   description?: string
   size: number // in GB
-  status: 'available' | 'in-use' | 'creating' | 'deleting' | 'error' | 'attaching' | 'detaching'
+  status:
+    | 'available'
+    | 'in-use'
+    | 'creating'
+    | 'deleting'
+    | 'error'
+    | 'attaching'
+    | 'detaching'
   region: string
   createdAt: string
   attachedTo?: string // instance ID if attached
@@ -43,7 +50,7 @@ export interface ResizeVolumeParams {
 // API base URL
 const API_BASE = '/api/ovh'
 
-async function fetchVolumes(projectId: string): Promise<Volume[]> {
+async function fetchVolumes(projectId: string): Promise<Array<Volume>> {
   const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume`)
 
   if (!response.ok) {
@@ -54,8 +61,13 @@ async function fetchVolumes(projectId: string): Promise<Volume[]> {
   return response.json()
 }
 
-async function fetchVolume(projectId: string, volumeId: string): Promise<Volume> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume/${volumeId}`)
+async function fetchVolume(
+  projectId: string,
+  volumeId: string,
+): Promise<Volume> {
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/volume/${volumeId}`,
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -67,11 +79,14 @@ async function fetchVolume(projectId: string, volumeId: string): Promise<Volume>
 
 async function createVolume(params: CreateVolumeParams): Promise<Volume> {
   const { projectId, ...body } = params
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/volume`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -81,10 +96,16 @@ async function createVolume(params: CreateVolumeParams): Promise<Volume> {
   return response.json()
 }
 
-async function deleteVolume(projectId: string, volumeId: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume/${volumeId}`, {
-    method: 'DELETE',
-  })
+async function deleteVolume(
+  projectId: string,
+  volumeId: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/volume/${volumeId}`,
+    {
+      method: 'DELETE',
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -94,11 +115,14 @@ async function deleteVolume(projectId: string, volumeId: string): Promise<void> 
 
 async function attachVolume(params: AttachVolumeParams): Promise<void> {
   const { projectId, volumeId, instanceId } = params
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume/${volumeId}/attach`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ instanceId }),
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/volume/${volumeId}/attach`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ instanceId }),
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -108,11 +132,14 @@ async function attachVolume(params: AttachVolumeParams): Promise<void> {
 
 async function detachVolume(params: DetachVolumeParams): Promise<void> {
   const { projectId, volumeId, instanceId } = params
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume/${volumeId}/detach`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ instanceId }),
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/volume/${volumeId}/detach`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ instanceId }),
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -122,11 +149,14 @@ async function detachVolume(params: DetachVolumeParams): Promise<void> {
 
 async function resizeVolume(params: ResizeVolumeParams): Promise<void> {
   const { projectId, volumeId, size } = params
-  const response = await fetch(`${API_BASE}/cloud/project/${projectId}/volume/${volumeId}/upsize`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ size }),
-  })
+  const response = await fetch(
+    `${API_BASE}/cloud/project/${projectId}/volume/${volumeId}/upsize`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ size }),
+    },
+  )
 
   if (!response.ok) {
     const error = await response.json()
@@ -169,8 +199,13 @@ export function useDeleteVolume() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ projectId, volumeId }: { projectId: string; volumeId: string }) =>
-      deleteVolume(projectId, volumeId),
+    mutationFn: ({
+      projectId,
+      volumeId,
+    }: {
+      projectId: string
+      volumeId: string
+    }) => deleteVolume(projectId, volumeId),
     onSuccess: (_, { projectId }) => {
       queryClient.invalidateQueries({ queryKey: ['volumes', projectId] })
     },

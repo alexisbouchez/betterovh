@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { useNotificationStore, type Notification } from './notification-store'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { useNotificationStore } from './notification-store'
 
 describe('NotificationStore', () => {
   beforeEach(() => {
@@ -44,7 +44,8 @@ describe('NotificationStore', () => {
   })
 
   it('removes a notification by ID', () => {
-    const { addNotification, removeNotification, notifications } = useNotificationStore.getState()
+    const { addNotification, removeNotification } =
+      useNotificationStore.getState()
 
     addNotification({ type: 'error', title: 'To Remove' })
     const id = useNotificationStore.getState().notifications[0].id
@@ -91,7 +92,7 @@ describe('NotificationStore', () => {
   })
 
   it('counts unread notifications', () => {
-    const { addNotification, markAsRead, getUnreadCount } = useNotificationStore.getState()
+    const { addNotification, markAsRead } = useNotificationStore.getState()
 
     addNotification({ type: 'error', title: 'First' })
     addNotification({ type: 'warning', title: 'Second' })
@@ -126,7 +127,12 @@ describe('NotificationStore', () => {
 
     const { notifications } = useNotificationStore.getState()
     // Newest notifications appear first
-    expect(notifications.map((n) => n.type)).toEqual(['info', 'warning', 'error', 'success'])
+    expect(notifications.map((n) => n.type)).toEqual([
+      'info',
+      'warning',
+      'error',
+      'success',
+    ])
   })
 
   describe('auto-dismiss', () => {
@@ -193,7 +199,11 @@ describe('NotificationStore', () => {
     it('respects custom dismissTimeout', () => {
       const { addNotification } = useNotificationStore.getState()
 
-      addNotification({ type: 'success', title: 'Success', dismissTimeout: 3000 })
+      addNotification({
+        type: 'success',
+        title: 'Success',
+        dismissTimeout: 3000,
+      })
       expect(useNotificationStore.getState().notifications).toHaveLength(1)
 
       vi.advanceTimersByTime(2000)

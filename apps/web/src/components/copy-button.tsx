@@ -1,12 +1,12 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { FileIcon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { buttonVariants } from '@/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { FileIcon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@/lib/utils'
 
 interface CopyButtonProps {
@@ -15,7 +15,11 @@ interface CopyButtonProps {
   label?: string
 }
 
-export function CopyButton({ value, className, label = 'Copy' }: CopyButtonProps) {
+export function CopyButton({
+  value,
+  className,
+  label = 'Copy',
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = useCallback(async () => {
@@ -46,7 +50,7 @@ export function CopyButton({ value, className, label = 'Copy' }: CopyButtonProps
             className={cn(
               buttonVariants({ variant: 'ghost', size: 'icon-xs' }),
               'h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity',
-              className
+              className,
             )}
             onClick={handleCopy}
             aria-label={copied ? 'Copied!' : label}
@@ -59,9 +63,7 @@ export function CopyButton({ value, className, label = 'Copy' }: CopyButtonProps
           </button>
         )}
       />
-      <TooltipContent side="top">
-        {copied ? 'Copied!' : label}
-      </TooltipContent>
+      <TooltipContent side="top">{copied ? 'Copied!' : label}</TooltipContent>
     </Tooltip>
   )
 }
@@ -72,7 +74,11 @@ interface CopyableTextProps {
   children?: React.ReactNode
 }
 
-export function CopyableText({ value, className, children }: CopyableTextProps) {
+export function CopyableText({
+  value,
+  className,
+  children,
+}: CopyableTextProps) {
   return (
     <span className={cn('inline-flex items-center gap-1 group', className)}>
       <code className="text-sm">{children ?? value}</code>

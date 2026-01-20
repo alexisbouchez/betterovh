@@ -1,10 +1,10 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, within } from '../../test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { InstancesTable, type InstancesTableProps } from './instances-table'
+import { render, screen } from '../../test-utils'
+import { InstancesTable } from './instances-table'
 import type { Instance } from '@/lib/queries/instances'
 
-const mockInstances: Instance[] = [
+const mockInstances: Array<Instance> = [
   {
     id: 'i-1',
     name: 'web-server',
@@ -82,7 +82,9 @@ describe('InstancesTable', () => {
   })
 
   it('handles error state', () => {
-    render(<InstancesTable instances={[]} error={new Error('Failed to load')} />)
+    render(
+      <InstancesTable instances={[]} error={new Error('Failed to load')} />,
+    )
 
     expect(screen.getByRole('alert')).toBeInTheDocument()
     expect(screen.getByText(/failed to load/i)).toBeInTheDocument()
@@ -97,7 +99,7 @@ describe('InstancesTable', () => {
         instances={mockInstances}
         selectable
         onSelectionChange={onSelectionChange}
-      />
+      />,
     )
 
     const checkboxes = screen.getAllByRole('checkbox')
@@ -115,7 +117,7 @@ describe('InstancesTable', () => {
         instances={mockInstances}
         selectable
         onSelectionChange={onSelectionChange}
-      />
+      />,
     )
 
     const selectAllCheckbox = screen.getAllByRole('checkbox')[0]
