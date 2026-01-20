@@ -1,0 +1,80 @@
+---
+title: Architecture
+description: Understanding the BetterOVH codebase architecture
+---
+
+## Tech Stack
+
+BetterOVH is built with modern React technologies:
+
+| Technology | Purpose |
+|------------|---------|
+| [TanStack Start](https://tanstack.com/start) | Full-stack React framework |
+| [TanStack Router](https://tanstack.com/router) | Type-safe file-based routing |
+| [TanStack Query](https://tanstack.com/query) | Server state management |
+| [Zustand](https://zustand.docs.pmnd.rs/) | Client state management |
+| [Base UI](https://base-ui.com/) | Unstyled UI primitives |
+| [Tailwind CSS v4](https://tailwindcss.com/) | Utility-first styling |
+| [Hugeicons](https://hugeicons.com/) | Icon library |
+| [Vitest](https://vitest.dev/) | Testing framework |
+
+## Project Structure
+
+```
+betterovh/
+├── apps/
+│   ├── web/                    # Main web application
+│   │   ├── src/
+│   │   │   ├── components/     # Reusable UI components
+│   │   │   ├── hooks/          # Custom React hooks
+│   │   │   ├── lib/            # Utilities, queries, stores
+│   │   │   └── routes/         # File-based routing
+│   │   └── package.json
+│   └── docs/                   # Documentation site
+├── packages/
+│   ├── ovh/                    # OVH API client
+│   └── ui/                     # Shared UI components
+└── package.json
+```
+
+## State Management
+
+### Server State
+
+Server state is managed with TanStack Query:
+
+- Automatic caching and revalidation
+- Optimistic updates for mutations
+- Error handling with ErrorState component
+
+### Client State
+
+Client state uses Zustand stores:
+
+- `useNotificationStore` - Toast notifications
+- `useThemeStore` - Theme preferences
+
+### URL State
+
+URL parameters are managed with TanStack Router:
+
+- Type-safe route parameters
+- Search params for filtering and pagination
+
+## Component Patterns
+
+All components follow consistent patterns:
+
+1. **Props interface** with clear TypeScript typing
+2. **Loading states** with skeleton placeholders
+3. **Error states** using the reusable `ErrorState` component
+4. **Empty states** using the reusable `EmptyState` component
+5. **Keyboard navigation** for accessible interactions
+
+## Styling
+
+The project uses Tailwind CSS v4 with:
+
+- CSS variables for theming (dark/light mode)
+- Class Variance Authority (CVA) for component variants
+- `cn()` utility for conditional class merging
