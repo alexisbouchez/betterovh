@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { EmptyState } from '@/components/empty-state'
 import type { Network } from '@/lib/queries/networks'
 
 export interface NetworksTableProps {
@@ -77,8 +78,14 @@ export function NetworksTable({ networks, isLoading, error, onRowClick }: Networ
           <TableSkeleton />
         ) : networks.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-              No networks found
+            <TableCell colSpan={5}>
+              <EmptyState
+                icon="🔒"
+                title="No private networks found"
+                description="Create a private network to securely connect your instances together."
+                actionLabel="Create Network"
+                actionHref="/network/private/new"
+              />
             </TableCell>
           </TableRow>
         ) : (

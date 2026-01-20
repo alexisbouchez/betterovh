@@ -9,22 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { DeleteConfirmDialog } from '@/components/confirm-dialog'
+import { EmptyState } from '@/components/empty-state'
+import { formatDate } from '@/lib/utils'
 import type { SSHKey } from '@/lib/queries/ssh-keys'
 
 export interface SSHKeysTableProps {
   sshKeys: SSHKey[]
   isLoading?: boolean
   error?: Error
-  onDelete?: (keyId: string) => void
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  onDelete?: (keyId: string) => Promise<void> | void
 }
 
 function TableSkeleton() {
@@ -79,8 +73,14 @@ export function SSHKeysTable({ sshKeys, isLoading, error, onDelete }: SSHKeysTab
           <TableSkeleton />
         ) : sshKeys.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-              No SSH keys found
+            <TableCell colSpan={5}>
+              <EmptyState
+                icon="🔑"
+                title="No SSH keys found"
+                description="Add an SSH key to securely connect to your instances without passwords."
+                actionLabel="Add SSH Key"
+                actionHref="/project/ssh-keys/new"
+              />
             </TableCell>
           </TableRow>
         ) : (
@@ -94,13 +94,16 @@ export function SSHKeysTable({ sshKeys, isLoading, error, onDelete }: SSHKeysTab
               <TableCell>{formatDate(key.createdAt)}</TableCell>
               <TableCell>
                 {onDelete && (
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => onDelete(key.id)}
-                  >
-                    Delete
-                  </Button>
+                  <DeleteConfirmDialog
+                    itemName={key.name}
+                    itemType="SSH key"
+                    onConfirm={() => onDelete(key.id)}
+                    trigger={
+                      <Button variant="destructive" size="sm">
+                        Delete
+                      </Button>
+                    }
+                  />
                 )}
               </TableCell>
             </TableRow>

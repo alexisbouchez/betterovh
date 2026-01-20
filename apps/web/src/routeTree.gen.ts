@@ -9,38 +9,174 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardStorageVolumesIndexRouteImport } from './routes/_dashboard/storage/volumes/index'
+import { Route as DashboardProjectSshKeysIndexRouteImport } from './routes/_dashboard/project/ssh-keys/index'
+import { Route as DashboardNetworkPrivateIndexRouteImport } from './routes/_dashboard/network/private/index'
+import { Route as DashboardComputeInstancesIndexRouteImport } from './routes/_dashboard/compute/instances/index'
+import { Route as DashboardStorageVolumesNewRouteImport } from './routes/_dashboard/storage/volumes/new'
+import { Route as DashboardStorageVolumesVolumeIdRouteImport } from './routes/_dashboard/storage/volumes/$volumeId'
+import { Route as DashboardComputeInstancesNewRouteImport } from './routes/_dashboard/compute/instances/new'
+import { Route as DashboardComputeInstancesInstanceIdRouteImport } from './routes/_dashboard/compute/instances/$instanceId'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardStorageVolumesIndexRoute =
+  DashboardStorageVolumesIndexRouteImport.update({
+    id: '/_dashboard/storage/volumes/',
+    path: '/storage/volumes/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardProjectSshKeysIndexRoute =
+  DashboardProjectSshKeysIndexRouteImport.update({
+    id: '/_dashboard/project/ssh-keys/',
+    path: '/project/ssh-keys/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardNetworkPrivateIndexRoute =
+  DashboardNetworkPrivateIndexRouteImport.update({
+    id: '/_dashboard/network/private/',
+    path: '/network/private/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardComputeInstancesIndexRoute =
+  DashboardComputeInstancesIndexRouteImport.update({
+    id: '/_dashboard/compute/instances/',
+    path: '/compute/instances/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardStorageVolumesNewRoute =
+  DashboardStorageVolumesNewRouteImport.update({
+    id: '/_dashboard/storage/volumes/new',
+    path: '/storage/volumes/new',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardStorageVolumesVolumeIdRoute =
+  DashboardStorageVolumesVolumeIdRouteImport.update({
+    id: '/_dashboard/storage/volumes/$volumeId',
+    path: '/storage/volumes/$volumeId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardComputeInstancesNewRoute =
+  DashboardComputeInstancesNewRouteImport.update({
+    id: '/_dashboard/compute/instances/new',
+    path: '/compute/instances/new',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DashboardComputeInstancesInstanceIdRoute =
+  DashboardComputeInstancesInstanceIdRouteImport.update({
+    id: '/_dashboard/compute/instances/$instanceId',
+    path: '/compute/instances/$instanceId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/compute/instances/$instanceId': typeof DashboardComputeInstancesInstanceIdRoute
+  '/compute/instances/new': typeof DashboardComputeInstancesNewRoute
+  '/storage/volumes/$volumeId': typeof DashboardStorageVolumesVolumeIdRoute
+  '/storage/volumes/new': typeof DashboardStorageVolumesNewRoute
+  '/compute/instances/': typeof DashboardComputeInstancesIndexRoute
+  '/network/private/': typeof DashboardNetworkPrivateIndexRoute
+  '/project/ssh-keys/': typeof DashboardProjectSshKeysIndexRoute
+  '/storage/volumes/': typeof DashboardStorageVolumesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/compute/instances/$instanceId': typeof DashboardComputeInstancesInstanceIdRoute
+  '/compute/instances/new': typeof DashboardComputeInstancesNewRoute
+  '/storage/volumes/$volumeId': typeof DashboardStorageVolumesVolumeIdRoute
+  '/storage/volumes/new': typeof DashboardStorageVolumesNewRoute
+  '/compute/instances': typeof DashboardComputeInstancesIndexRoute
+  '/network/private': typeof DashboardNetworkPrivateIndexRoute
+  '/project/ssh-keys': typeof DashboardProjectSshKeysIndexRoute
+  '/storage/volumes': typeof DashboardStorageVolumesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/_dashboard/compute/instances/$instanceId': typeof DashboardComputeInstancesInstanceIdRoute
+  '/_dashboard/compute/instances/new': typeof DashboardComputeInstancesNewRoute
+  '/_dashboard/storage/volumes/$volumeId': typeof DashboardStorageVolumesVolumeIdRoute
+  '/_dashboard/storage/volumes/new': typeof DashboardStorageVolumesNewRoute
+  '/_dashboard/compute/instances/': typeof DashboardComputeInstancesIndexRoute
+  '/_dashboard/network/private/': typeof DashboardNetworkPrivateIndexRoute
+  '/_dashboard/project/ssh-keys/': typeof DashboardProjectSshKeysIndexRoute
+  '/_dashboard/storage/volumes/': typeof DashboardStorageVolumesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/compute/instances/$instanceId'
+    | '/compute/instances/new'
+    | '/storage/volumes/$volumeId'
+    | '/storage/volumes/new'
+    | '/compute/instances/'
+    | '/network/private/'
+    | '/project/ssh-keys/'
+    | '/storage/volumes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/compute/instances/$instanceId'
+    | '/compute/instances/new'
+    | '/storage/volumes/$volumeId'
+    | '/storage/volumes/new'
+    | '/compute/instances'
+    | '/network/private'
+    | '/project/ssh-keys'
+    | '/storage/volumes'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/_dashboard/compute/instances/$instanceId'
+    | '/_dashboard/compute/instances/new'
+    | '/_dashboard/storage/volumes/$volumeId'
+    | '/_dashboard/storage/volumes/new'
+    | '/_dashboard/compute/instances/'
+    | '/_dashboard/network/private/'
+    | '/_dashboard/project/ssh-keys/'
+    | '/_dashboard/storage/volumes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  DashboardComputeInstancesInstanceIdRoute: typeof DashboardComputeInstancesInstanceIdRoute
+  DashboardComputeInstancesNewRoute: typeof DashboardComputeInstancesNewRoute
+  DashboardStorageVolumesVolumeIdRoute: typeof DashboardStorageVolumesVolumeIdRoute
+  DashboardStorageVolumesNewRoute: typeof DashboardStorageVolumesNewRoute
+  DashboardComputeInstancesIndexRoute: typeof DashboardComputeInstancesIndexRoute
+  DashboardNetworkPrivateIndexRoute: typeof DashboardNetworkPrivateIndexRoute
+  DashboardProjectSshKeysIndexRoute: typeof DashboardProjectSshKeysIndexRoute
+  DashboardStorageVolumesIndexRoute: typeof DashboardStorageVolumesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +184,77 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_dashboard/storage/volumes/': {
+      id: '/_dashboard/storage/volumes/'
+      path: '/storage/volumes'
+      fullPath: '/storage/volumes/'
+      preLoaderRoute: typeof DashboardStorageVolumesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/project/ssh-keys/': {
+      id: '/_dashboard/project/ssh-keys/'
+      path: '/project/ssh-keys'
+      fullPath: '/project/ssh-keys/'
+      preLoaderRoute: typeof DashboardProjectSshKeysIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/network/private/': {
+      id: '/_dashboard/network/private/'
+      path: '/network/private'
+      fullPath: '/network/private/'
+      preLoaderRoute: typeof DashboardNetworkPrivateIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/compute/instances/': {
+      id: '/_dashboard/compute/instances/'
+      path: '/compute/instances'
+      fullPath: '/compute/instances/'
+      preLoaderRoute: typeof DashboardComputeInstancesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/storage/volumes/new': {
+      id: '/_dashboard/storage/volumes/new'
+      path: '/storage/volumes/new'
+      fullPath: '/storage/volumes/new'
+      preLoaderRoute: typeof DashboardStorageVolumesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/storage/volumes/$volumeId': {
+      id: '/_dashboard/storage/volumes/$volumeId'
+      path: '/storage/volumes/$volumeId'
+      fullPath: '/storage/volumes/$volumeId'
+      preLoaderRoute: typeof DashboardStorageVolumesVolumeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/compute/instances/new': {
+      id: '/_dashboard/compute/instances/new'
+      path: '/compute/instances/new'
+      fullPath: '/compute/instances/new'
+      preLoaderRoute: typeof DashboardComputeInstancesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/compute/instances/$instanceId': {
+      id: '/_dashboard/compute/instances/$instanceId'
+      path: '/compute/instances/$instanceId'
+      fullPath: '/compute/instances/$instanceId'
+      preLoaderRoute: typeof DashboardComputeInstancesInstanceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  DashboardComputeInstancesInstanceIdRoute:
+    DashboardComputeInstancesInstanceIdRoute,
+  DashboardComputeInstancesNewRoute: DashboardComputeInstancesNewRoute,
+  DashboardStorageVolumesVolumeIdRoute: DashboardStorageVolumesVolumeIdRoute,
+  DashboardStorageVolumesNewRoute: DashboardStorageVolumesNewRoute,
+  DashboardComputeInstancesIndexRoute: DashboardComputeInstancesIndexRoute,
+  DashboardNetworkPrivateIndexRoute: DashboardNetworkPrivateIndexRoute,
+  DashboardProjectSshKeysIndexRoute: DashboardProjectSshKeysIndexRoute,
+  DashboardStorageVolumesIndexRoute: DashboardStorageVolumesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

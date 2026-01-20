@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { EmptyState } from '@/components/empty-state'
 import type { Volume } from '@/lib/queries/volumes'
 
 export interface VolumesTableProps {
@@ -80,8 +81,14 @@ export function VolumesTable({ volumes, isLoading, error, onRowClick }: VolumesT
           <TableSkeleton />
         ) : volumes.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-              No volumes found
+            <TableCell colSpan={5}>
+              <EmptyState
+                icon="💾"
+                title="No volumes found"
+                description="Create a block storage volume to persist your data independently from instances."
+                actionLabel="Create Volume"
+                actionHref="/storage/volumes/new"
+              />
             </TableCell>
           </TableRow>
         ) : (

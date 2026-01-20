@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { DeleteConfirmDialog } from '@/components/confirm-dialog'
 import type { Volume } from '@/lib/queries/volumes'
 
 export interface VolumeHeaderProps {
@@ -11,7 +12,7 @@ export interface VolumeHeaderProps {
   onBack?: () => void
   onAttach?: (volumeId: string) => void
   onDetach?: (volumeId: string) => void
-  onDelete?: (volumeId: string) => void
+  onDelete?: (volumeId: string) => Promise<void> | void
 }
 
 const statusConfig: Record<Volume['status'], { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
@@ -122,13 +123,20 @@ export function VolumeHeader({
               Detach
             </Button>
           )}
-          {onDelete && (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => onDelete(volume.id)}
-              disabled={!canDelete}
-            >
+          {onDelete && canDelete && (
+            <DeleteConfirmDialog
+              itemName={volume.name}
+              itemType="volume"
+              onConfirm={() => onDelete(volume.id)}
+              trigger={
+                <Button variant="destructive" size="sm">
+                  Delete
+                </Button>
+              }
+            />
+          )}
+          {onDelete && !canDelete && (
+            <Button variant="destructive" size="sm" disabled>
               Delete
             </Button>
           )}

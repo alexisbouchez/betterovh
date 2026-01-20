@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { InstanceActions } from './instance-actions'
+import { formatDate } from '@/lib/utils'
 import type { Instance } from '@/lib/queries/instances'
 
 export interface InstanceHeaderProps {
@@ -27,15 +28,6 @@ const statusConfig: Record<Instance['status'], { label: string; variant: 'defaul
   DELETED: { label: 'Deleted', variant: 'secondary' },
   SHELVED: { label: 'Shelved', variant: 'secondary' },
   SHELVED_OFFLOADED: { label: 'Shelved', variant: 'secondary' },
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
 }
 
 function getPublicIP(instance: Instance): string | null {

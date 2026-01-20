@@ -66,7 +66,7 @@ describe('NetworksTable', () => {
 
   it('shows empty state when no networks', () => {
     render(<NetworksTable networks={[]} isLoading={false} />)
-    expect(screen.getByText(/no networks/i)).toBeInTheDocument()
+    expect(screen.getByText(/no private networks found/i)).toBeInTheDocument()
   })
 
   it('shows error state when error provided', () => {

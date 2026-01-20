@@ -60,15 +60,22 @@ describe('SSHKeysTable', () => {
     expect(screen.getByRole('alert')).toBeInTheDocument()
   })
 
-  it('calls onDelete when delete button clicked', async () => {
+  it('calls onDelete when delete is confirmed', async () => {
     const user = userEvent.setup()
     const onDelete = vi.fn()
 
     render(<SSHKeysTable {...defaultProps} onDelete={onDelete} />)
 
+    // Click the delete button to open confirmation dialog
     const deleteButtons = screen.getAllByRole('button', { name: /delete/i })
     await user.click(deleteButtons[0])
 
-    expect(onDelete).toHaveBeenCalledWith('key-1')
+    // Confirm the deletion in the dialog
+    const confirmButton = await screen.findByRole('button', { name: /^delete$/i })
+    await user.click(confirmButton)
+
+    await waitFor(() => {
+      expect(onDelete).toHaveBeenCalledWith('key-1')
+    })
   })
 })

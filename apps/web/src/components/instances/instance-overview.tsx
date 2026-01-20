@@ -1,21 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CopyableText } from '@/components/copy-button'
+import { formatDate } from '@/lib/utils'
 import type { Instance, InstanceIPAddress } from '@/lib/queries/instances'
 
 export interface InstanceOverviewProps {
   instance?: Instance
   isLoading?: boolean
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
 }
 
 function OverviewSkeleton() {
@@ -72,7 +63,7 @@ function IPList({ title, ips }: IPListProps) {
       <div className="space-y-1">
         {ips.map((ip) => (
           <div key={`${ip.type}-${ip.ip}`} className="flex items-center gap-2">
-            <code className="text-sm">{ip.ip}</code>
+            <CopyableText value={ip.ip} />
             <span className="text-xs text-muted-foreground">
               IPv{ip.version}
             </span>
@@ -102,11 +93,11 @@ export function InstanceOverview({ instance, isLoading }: InstanceOverviewProps)
           <CardTitle className="text-lg">Instance Details</CardTitle>
         </CardHeader>
         <CardContent>
-          <DetailRow label="Instance ID" value={<code className="text-sm">{instance.id}</code>} />
+          <DetailRow label="Instance ID" value={<CopyableText value={instance.id} />} />
           <DetailRow label="Region" value={instance.region} />
           <DetailRow label="Flavor" value={instance.flavorId} />
           <DetailRow label="Image" value={instance.imageId} />
-          <DetailRow label="Created" value={formatDate(instance.created)} />
+          <DetailRow label="Created" value={formatDate(instance.created, { includeTime: true })} />
         </CardContent>
       </Card>
 

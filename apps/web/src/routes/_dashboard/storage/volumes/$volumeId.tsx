@@ -9,21 +9,12 @@ import {
 } from '@/lib/queries/volumes'
 import { useNotificationStore } from '@/lib/notification-store'
 import { VolumeHeader } from '@/components/storage/volume-header'
+import { CopyableText } from '@/components/copy-button'
+import { formatDate } from '@/lib/utils'
 
 export const Route = createFileRoute('/_dashboard/storage/volumes/$volumeId')({
   component: VolumeDetailPage,
 })
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
-}
 
 export function VolumeDetailPage() {
   const { volumeId } = useParams({ from: '/_dashboard/storage/volumes/$volumeId' })
@@ -111,7 +102,7 @@ export function VolumeDetailPage() {
               <div className="space-y-3">
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-muted-foreground">Volume ID</span>
-                  <code className="text-sm">{volume.id}</code>
+                  <CopyableText value={volume.id} />
                 </div>
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-muted-foreground">Size</span>
@@ -127,7 +118,7 @@ export function VolumeDetailPage() {
                 </div>
                 <div className="flex justify-between py-2">
                   <span className="text-muted-foreground">Created</span>
-                  <span className="font-medium">{formatDate(volume.createdAt)}</span>
+                  <span className="font-medium">{formatDate(volume.createdAt, { includeTime: true })}</span>
                 </div>
               </div>
             </CardContent>
@@ -142,7 +133,7 @@ export function VolumeDetailPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-muted-foreground">Attached To</span>
-                    <code className="text-sm">{volume.attachedTo}</code>
+                    <CopyableText value={volume.attachedTo} />
                   </div>
                   <p className="text-sm text-muted-foreground">
                     This volume is currently attached to an instance.

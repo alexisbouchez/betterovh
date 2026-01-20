@@ -10,8 +10,9 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
+import { EmptyState } from '@/components/empty-state'
 import type { Instance } from '@/lib/queries/instances'
-import { cn } from '@/lib/utils'
+import { cn, formatDate } from '@/lib/utils'
 
 export interface InstancesTableProps {
   instances: Instance[]
@@ -34,15 +35,6 @@ const statusConfig: Record<Instance['status'], { label: string; variant: 'defaul
   DELETED: { label: 'Deleted', variant: 'secondary' },
   SHELVED: { label: 'Shelved', variant: 'secondary' },
   SHELVED_OFFLOADED: { label: 'Shelved', variant: 'secondary' },
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
 }
 
 function getPublicIP(instance: Instance): string | null {
@@ -140,11 +132,14 @@ export function InstancesTable({
             <TableSkeleton />
           ) : instances.length === 0 ? (
             <TableRow>
-              <TableCell
-                colSpan={selectable ? 6 : 5}
-                className="h-24 text-center text-muted-foreground"
-              >
-                No instances found
+              <TableCell colSpan={selectable ? 6 : 5}>
+                <EmptyState
+                  icon="💻"
+                  title="No instances found"
+                  description="Create your first instance to get started with cloud computing."
+                  actionLabel="Create Instance"
+                  actionHref="/compute/instances/new"
+                />
               </TableCell>
             </TableRow>
           ) : (
