@@ -15,6 +15,10 @@ export interface NotificationInput {
   type: NotificationType
   title: string
   message?: string
+  /** Set to false to prevent auto-dismiss. Defaults to true for success/info, false for error/warning */
+  autoDismiss?: boolean
+  /** Auto-dismiss timeout in ms. Defaults to 5000 */
+  dismissTimeout?: number
 }
 
 interface NotificationState {
@@ -47,6 +51,16 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
     set((state) => ({
       notifications: [notification, ...state.notifications],
     }))
+
+    // Auto-dismiss: default to true for success/info, false for error/warning
+    const shouldAutoDismiss = input.autoDismiss ?? (input.type === 'success' || input.type === 'info')
+
+    if (shouldAutoDismiss) {
+      const timeout = input.dismissTimeout ?? 5000
+      setTimeout(() => {
+        get().removeNotification(notification.id)
+      }, timeout)
+    }
   },
 
   removeNotification: (id) => {

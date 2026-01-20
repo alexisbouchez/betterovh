@@ -1,10 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { useNotificationStore, type Notification } from './notification-store'
 
 describe('NotificationStore', () => {
   beforeEach(() => {
     // Reset the store before each test
     useNotificationStore.getState().clearAll()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('starts with empty notifications', () => {
@@ -19,6 +24,7 @@ describe('NotificationStore', () => {
       type: 'info',
       title: 'Test Notification',
       message: 'This is a test',
+      autoDismiss: false,
     })
 
     const { notifications } = useNotificationStore.getState()
@@ -30,8 +36,8 @@ describe('NotificationStore', () => {
   it('generates unique IDs for notifications', () => {
     const { addNotification } = useNotificationStore.getState()
 
-    addNotification({ type: 'info', title: 'First' })
-    addNotification({ type: 'info', title: 'Second' })
+    addNotification({ type: 'error', title: 'First' })
+    addNotification({ type: 'error', title: 'Second' })
 
     const { notifications } = useNotificationStore.getState()
     expect(notifications[0].id).not.toBe(notifications[1].id)
@@ -40,7 +46,7 @@ describe('NotificationStore', () => {
   it('removes a notification by ID', () => {
     const { addNotification, removeNotification, notifications } = useNotificationStore.getState()
 
-    addNotification({ type: 'info', title: 'To Remove' })
+    addNotification({ type: 'error', title: 'To Remove' })
     const id = useNotificationStore.getState().notifications[0].id
 
     removeNotification(id)
@@ -51,7 +57,7 @@ describe('NotificationStore', () => {
   it('marks a notification as read', () => {
     const { addNotification, markAsRead } = useNotificationStore.getState()
 
-    addNotification({ type: 'info', title: 'Unread' })
+    addNotification({ type: 'error', title: 'Unread' })
     const id = useNotificationStore.getState().notifications[0].id
 
     expect(useNotificationStore.getState().notifications[0].read).toBe(false)
@@ -64,7 +70,7 @@ describe('NotificationStore', () => {
   it('marks all notifications as read', () => {
     const { addNotification, markAllAsRead } = useNotificationStore.getState()
 
-    addNotification({ type: 'info', title: 'First' })
+    addNotification({ type: 'error', title: 'First' })
     addNotification({ type: 'warning', title: 'Second' })
 
     markAllAsRead()
@@ -76,7 +82,7 @@ describe('NotificationStore', () => {
   it('clears all notifications', () => {
     const { addNotification, clearAll } = useNotificationStore.getState()
 
-    addNotification({ type: 'info', title: 'First' })
+    addNotification({ type: 'error', title: 'First' })
     addNotification({ type: 'warning', title: 'Second' })
 
     clearAll()
@@ -87,7 +93,7 @@ describe('NotificationStore', () => {
   it('counts unread notifications', () => {
     const { addNotification, markAsRead, getUnreadCount } = useNotificationStore.getState()
 
-    addNotification({ type: 'info', title: 'First' })
+    addNotification({ type: 'error', title: 'First' })
     addNotification({ type: 'warning', title: 'Second' })
 
     expect(useNotificationStore.getState().getUnreadCount()).toBe(2)
@@ -102,7 +108,7 @@ describe('NotificationStore', () => {
     const { addNotification } = useNotificationStore.getState()
 
     const before = Date.now()
-    addNotification({ type: 'info', title: 'Timestamped' })
+    addNotification({ type: 'error', title: 'Timestamped' })
     const after = Date.now()
 
     const { notifications } = useNotificationStore.getState()
@@ -113,13 +119,88 @@ describe('NotificationStore', () => {
   it('supports different notification types', () => {
     const { addNotification } = useNotificationStore.getState()
 
-    addNotification({ type: 'success', title: 'Success' })
+    addNotification({ type: 'success', title: 'Success', autoDismiss: false })
     addNotification({ type: 'error', title: 'Error' })
     addNotification({ type: 'warning', title: 'Warning' })
-    addNotification({ type: 'info', title: 'Info' })
+    addNotification({ type: 'info', title: 'Info', autoDismiss: false })
 
     const { notifications } = useNotificationStore.getState()
     // Newest notifications appear first
     expect(notifications.map((n) => n.type)).toEqual(['info', 'warning', 'error', 'success'])
+  })
+
+  describe('auto-dismiss', () => {
+    it('auto-dismisses success notifications after 5 seconds', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'success', title: 'Success' })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(5000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(0)
+    })
+
+    it('auto-dismisses info notifications after 5 seconds', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'info', title: 'Info' })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(5000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(0)
+    })
+
+    it('does not auto-dismiss error notifications by default', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'error', title: 'Error' })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(10000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+    })
+
+    it('does not auto-dismiss warning notifications by default', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'warning', title: 'Warning' })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(10000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+    })
+
+    it('respects autoDismiss: false for success notifications', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'success', title: 'Success', autoDismiss: false })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(10000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+    })
+
+    it('respects autoDismiss: true for error notifications', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'error', title: 'Error', autoDismiss: true })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(5000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(0)
+    })
+
+    it('respects custom dismissTimeout', () => {
+      const { addNotification } = useNotificationStore.getState()
+
+      addNotification({ type: 'success', title: 'Success', dismissTimeout: 3000 })
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(2000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(1)
+
+      vi.advanceTimersByTime(1000)
+      expect(useNotificationStore.getState().notifications).toHaveLength(0)
+    })
   })
 })
