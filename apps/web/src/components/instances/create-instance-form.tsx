@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Select,
   SelectContent,
@@ -189,6 +190,7 @@ export function CreateInstanceForm({
           </Button>
         )}
         <Button type="submit" disabled={!isValid || isSubmitting}>
+          {isSubmitting && <Spinner />}
           {isSubmitting ? 'Creating...' : 'Create Instance'}
         </Button>
       </div>
