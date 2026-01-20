@@ -68,13 +68,13 @@ async function handleOvhRequest(request: Request, path: string) {
 
   // Get timestamp from OVH API
   const timeResponse = await fetch(`${config.baseUrl}/auth/time`)
-  const timestamp = await timeResponse.text()
+  const timestamp = (await timeResponse.text()).trim()
 
   // Sign the request
   const signature = signRequest(method, ovhUrl, body, timestamp, config)
 
   // Make the request to OVH API
-  const response = await fetch(ovhUrl, {
+  const fetchOptions: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -83,8 +83,14 @@ async function handleOvhRequest(request: Request, path: string) {
       'X-Ovh-Timestamp': timestamp,
       'X-Ovh-Signature': signature,
     },
-    body: body || undefined,
-  })
+  }
+
+  // Only include body for methods that support it
+  if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+    fetchOptions.body = body
+  }
+
+  const response = await fetch(ovhUrl, fetchOptions)
 
   const data = await response.json()
 
