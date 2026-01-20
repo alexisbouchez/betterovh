@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState, useEffect } from 'react'
+import { useProjects } from './queries/projects'
 
 interface Project {
   id: string
@@ -10,30 +11,34 @@ interface ProjectContextValue {
   projectId: string
   setCurrentProject: (project: Project) => void
   isLoading: boolean
+  projects: string[]
 }
 
 const ProjectContext = createContext<ProjectContextValue | null>(null)
 
 interface ProjectProviderProps {
   children: React.ReactNode
-  defaultProjectId?: string
 }
 
-export function ProjectProvider({
-  children,
-  defaultProjectId = 'default',
-}: ProjectProviderProps) {
-  const [currentProject, setCurrentProjectState] = useState<Project | null>({
-    id: defaultProjectId,
-    name: 'Default Project',
-  })
-  const [isLoading] = useState(false)
+export function ProjectProvider({ children }: ProjectProviderProps) {
+  const { data: projects = [], isLoading: isLoadingProjects } = useProjects()
+  const [currentProject, setCurrentProjectState] = useState<Project | null>(null)
+
+  // Set the first project as default when projects are loaded
+  useEffect(() => {
+    if (projects.length > 0 && !currentProject) {
+      setCurrentProjectState({
+        id: projects[0],
+        name: `Project ${projects[0].slice(0, 8)}...`,
+      })
+    }
+  }, [projects, currentProject])
 
   const setCurrentProject = useCallback((project: Project) => {
     setCurrentProjectState(project)
   }, [])
 
-  const projectId = currentProject?.id ?? defaultProjectId
+  const projectId = currentProject?.id ?? ''
 
   return (
     <ProjectContext.Provider
@@ -41,7 +46,8 @@ export function ProjectProvider({
         currentProject,
         projectId,
         setCurrentProject,
-        isLoading,
+        isLoading: isLoadingProjects,
+        projects,
       }}
     >
       {children}
