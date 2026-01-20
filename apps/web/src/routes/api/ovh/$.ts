@@ -2,10 +2,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import Ovh from 'ovh'
 
 function getOvhClient() {
-  const endpoint = process.env.OVH_ENDPOINT || 'ovh-eu'
-  const appKey = process.env.OVH_APP_KEY
-  const appSecret = process.env.OVH_APP_SECRET
-  const consumerKey = process.env.OVH_CONSUMER_KEY
+  const endpoint = (process.env.OVH_ENDPOINT || 'ovh-eu').trim()
+  const appKey = (process.env.OVH_APP_KEY || '').trim()
+  const appSecret = (process.env.OVH_APP_SECRET || '').trim()
+  const consumerKey = (process.env.OVH_CONSUMER_KEY || '').trim()
 
   if (!appKey || !appSecret || !consumerKey) {
     throw new Error('OVH API credentials not configured')
